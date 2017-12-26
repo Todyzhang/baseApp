@@ -119,9 +119,13 @@ const OPTIONS = {
 function drawNative(id, styles, tags) {
   return new plus.nativeObj.View(id, styles, tags);
 }
-
+function isEmptyObject(e) {
+  for (let t in e)
+    return !1;
+  return !0
+}
 export default {
   "name": "util-tab",
   drawNative,
-
+  isEmptyObject
 }

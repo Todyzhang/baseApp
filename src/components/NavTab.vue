@@ -25,7 +25,7 @@
   import mui from "mui"
 
   export default {
-    name: "nav-bar",
+    name: "nav-tab",
     props: {
       ntItems: {
         type: Array,

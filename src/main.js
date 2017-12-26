@@ -3,13 +3,40 @@
 import Vue from "vue"
 import App from "./pages/App"
 import router from "./router/routes"
+import store from "./store/store"
 
-Vue.config.productionTip = false
+import * as _ from "../utils/util"
+
+Vue.config.productionTip = false;
+
+// 全局导航钩子
+router.beforeEach((to, from, next) => {
+
+  if (to.meta.requireAuth) {
+
+    // console.log(isEmptyObject(store.state.user))
+    if(!_.isEmptyObject(store.state.user)) {
+      next();
+    }
+    else {
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
+    }
+  }
+  else {
+    next();
+  }
+});
+
+
 
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
+  store,
   router,
   template: "<App/>",
   components: { App }
-})
+});

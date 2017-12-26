@@ -5,12 +5,17 @@
 </template>
 
 <script>
+  import mui from "mui"
 
   export default {
-    name: "app"
+    name: "app",
+    mounted(){
+      console.log("store",this.$store.state.user)
+      mui.init()
+    }
   }
 </script>
 
 <style>
-
+  @import "../../static/lib/css/mui.min.css";
 </style>
