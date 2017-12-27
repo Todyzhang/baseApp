@@ -5,9 +5,11 @@ import App from "./pages/App"
 import router from "./router/routes"
 import store from "./store/store"
 
-import * as _ from "../utils/util"
+import util from "./utils/util"
 
 Vue.config.productionTip = false;
+
+require('@/mock/mock')//此部分引入的是我们所编写的mockjs文档
 
 // 全局导航钩子
 router.beforeEach((to, from, next) => {
@@ -15,7 +17,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
 
     // console.log(isEmptyObject(store.state.user))
-    if(!_.isEmptyObject(store.state.user)) {
+    if(!util.isEmptyObject(store.state.user)) {
       next();
     }
     else {

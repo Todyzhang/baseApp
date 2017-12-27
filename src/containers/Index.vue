@@ -104,6 +104,7 @@
 
           <slider :s-imgs="sliderImgs" :s-delay="5" s-indicator="num"></slider>
 
+
           <div class="mui-content-padded">
             <p>这是可拖动式右滑导航示例，主页面和菜单在一个HTML文件中， 优点是支持拖动手势（跟手），缺点是不支持菜单内容在多页面的复用； 当前页面为主界面，你可以在主界面放置任何内容； 打开侧滑菜单有多种方式： 1、在当前页面向右拖动； 2、点击页面左上角的
               <span class="mui-icon mui-icon-bars"></span> 图标； 3、通过JS API触发（例如点击如下蓝色按钮体验）；
@@ -156,6 +157,8 @@ import NavBar from "../components/NavBar";
 import NavTab from "../components/NavTab";
 import Slider from "../components/Slider";
 
+import fetch from "../fetch"
+
 export default {
   components: {
     Slider,
@@ -194,7 +197,7 @@ export default {
     }
   },
   mounted(){
-
+    fetch.GetData().then(res=>{console.log(res)})
     let offCanvasWrapper = mui('#offCanvasWrapper');
     //主界面容器
     let offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
