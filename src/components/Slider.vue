@@ -50,7 +50,6 @@ e.g.
 </template>
 
 <script>
-  import mui from "mui"
 
   export default {
     name: "slider",

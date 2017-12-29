@@ -10,7 +10,7 @@
             <span class="android-only">；4.Android手机按back键；5.Android手机按menu键
 							</span>。
             <p style="margin: 10px 15px;">
-              <button id="offCanvasHide" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">关闭侧滑菜单</button>
+              <button type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;" @click="toLogin">登录</button>
             </p>
 
           </div>
@@ -97,55 +97,10 @@
     </aside>
     <!--主界面部分-->
     <div class="mui-inner-wrap">
-      <nav-bar nb-title="div模式右滑菜单" :nb-left="nbLeft" :nb-right="nbRight"></nav-bar>
-      <nav-tab :nt-items="ntItems"></nav-tab>
-      <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
-        <div class="mui-scroll">
+      <nav-bar nb-title="div模式右滑菜单" :nb-left="nbLeft" :nb-right="nbRight" />
+      <nav-tab :nt-items="ntItems" />
+      <router-view />
 
-          <slider :s-imgs="sliderImgs" :s-delay="5" s-indicator="num"></slider>
-
-
-          <div class="mui-content-padded">
-            <p>这是可拖动式右滑导航示例，主页面和菜单在一个HTML文件中， 优点是支持拖动手势（跟手），缺点是不支持菜单内容在多页面的复用； 当前页面为主界面，你可以在主界面放置任何内容； 打开侧滑菜单有多种方式： 1、在当前页面向右拖动； 2、点击页面左上角的
-              <span class="mui-icon mui-icon-bars"></span> 图标； 3、通过JS API触发（例如点击如下蓝色按钮体验）；
-              <span class="android-only">4、Android手机按menu键；</span>
-            </p>
-            <p style="padding: 5px 20px;margin-bottom: 5px;">
-              <button id="offCanvasShow" type="button" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 10px;">
-                显示侧滑菜单
-              </button>
-            </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-            <p>这是可拖动式侧滑菜单示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.在手机屏幕任意位置向左拖动(drag)；2.点击本侧滑菜单页之外的任意位置; </p>
-
-
-          </div>
-          <form class="mui-input-group" style="margin-bottom: 15px;">
-            <div class="mui-input-row mui-radio">
-              <label>主界面移动、菜单不动</label>
-              <input name="style" type="radio" checked="" value="main-move">
-            </div>
-            <div class="mui-input-row mui-radio">
-              <label>主界面不动、菜单移动</label>
-              <input name="style" type="radio" value="menu-move">
-            </div>
-            <div class="mui-input-row mui-radio" id="move-togger">
-              <label>整体移动</label>
-              <input name="style" type="radio" value="all-move">
-            </div>
-            <div class="mui-input-row mui-radio">
-              <label>缩放式侧滑（类手机QQ）</label>
-              <input name="style" type="radio" value="main-move-scalable">
-            </div>
-          </form>
-
-        </div>
-      </div>
       <!-- off-canvas backdrop -->
       <div class="mui-off-canvas-backdrop"></div>
     </div>
@@ -155,13 +110,11 @@
 <script>
 import NavBar from "../components/NavBar";
 import NavTab from "../components/NavTab";
-import Slider from "../components/Slider";
 
 import fetch from "../fetch"
 
 export default {
   components: {
-    Slider,
     NavBar,NavTab },
   name: "index",
   data () {
@@ -177,12 +130,6 @@ export default {
         icon:"mui-action-back",
         text:"关闭"
       },
-      sliderImgs:[
-        {img:require("../assets/shuijiao.jpg")},
-        {img:require("../assets/muwu.jpg")},
-        {img:require("../assets/cbd.jpg")},
-        {img:require("../assets/yuantiao.jpg")}
-      ],
       ntItems: [
         {icon:"mui-icon-home",text:"首页"},
         {icon:"mui-icon-phone",text:"电话"},
@@ -194,67 +141,14 @@ export default {
   methods:{
     showMenu(){
       mui('#offCanvasWrapper').offCanvas().show();
+    },
+    toLogin(){
+      this.$router.push("login");
     }
   },
   mounted(){
-    fetch.GetData().then(res=>{console.log(res)})
-    let offCanvasWrapper = mui('#offCanvasWrapper');
-    //主界面容器
-    let offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
-    //菜单容器
-    let offCanvasSide = document.getElementById("offCanvasSide");
-
-    //移动效果是否为整体移动
-    let moveTogether = false;
-    //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
-    let classList = offCanvasWrapper[0].classList;
-
-    //变换侧滑动画移动效果；
-    mui('.mui-input-group').on('change', 'input', function() {
-      if (this.checked) {
-        offCanvasSide.classList.remove('mui-transitioning');
-        offCanvasSide.setAttribute('style', '');
-        classList.remove('mui-slide-in');
-        classList.remove('mui-scalable');
-        switch (this.value) {
-          case 'main-move':
-            if (moveTogether) {
-              //仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
-              offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
-            }
-            break;
-          case 'main-move-scalable':
-            if (moveTogether) {
-              //仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
-              offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
-            }
-            classList.add('mui-scalable');
-            break;
-          case 'menu-move':
-            classList.add('mui-slide-in');
-            break;
-          case 'all-move':
-            moveTogether = true;
-            //整体滑动时，侧滑菜单在inner-wrap内
-            offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
-            break;
-        }
-        offCanvasWrapper.offCanvas().refresh();
-      }
-    });
-
-    //主界面‘显示侧滑菜单’按钮的点击事件
-    document.getElementById('offCanvasShow').addEventListener('tap', function() {
-      offCanvasWrapper.offCanvas('show');
-    });
-    //菜单界面，‘关闭侧滑菜单’按钮的点击事件
-    document.getElementById('offCanvasHide').addEventListener('tap', function() {
-      offCanvasWrapper.offCanvas('close');
-    });
-
     //主界面和侧滑菜单界面均支持区域滚动；
     mui('#offCanvasSideScroll').scroll();
-    mui('#offCanvasContentScroll').scroll();
 
     //实现ios平台原生侧滑关闭页面；
     if (mui.os.plus && mui.os.ios) {
@@ -298,5 +192,11 @@ export default {
   }
   input {
     color: #000;
+  }
+  .mui-bar-tab{
+    height: 60px;
+  }
+  .mui-bar-tab~.mui-content {
+    padding-bottom: 60px;
   }
 </style>
