@@ -1925,9 +1925,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
     $.options = $.extend(true, $.global, options || {});
     $.ready(function() {
       $.doAction('inits', function(index, init) {
-        console.log(index,init)
         var isInit = !!(!inits[init.name] || init.repeat);
-        if(init.name==="pullrefresh") isInit=true;
         if (isInit) {
           init.handle.call($);
           inits[init.name] = true;
@@ -4565,7 +4563,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
       }
     },
     _scrollbottom: function() {
-      if (!this.pulldown && !this.loading) {
+      if (!this.pulldown && !this.loading && !this.options.disabled) {
         this.pulldown = false;
         this._initPullupRefresh();
         this.pullupLoading();
@@ -4583,6 +4581,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
     },
     _drag: function(e) {
       this._super(e);
+      if(this.options.disabled) return;
       if (!this.pulldown && !this.loading && this.topPocket && e.detail.direction === 'down' && this.y >= 0) {
         this._initPulldownRefresh();
       }
@@ -4686,6 +4685,12 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
       }
       this._super();
     },
+    setDisabled: function(flag){
+      if(flag === undefined){
+        flag = true;
+      }
+      this.options.disabled = !!flag;
+    }
   }, $.PullRefresh));
   $.fn.pullRefresh = function(options) {
     if (this.length === 1) {

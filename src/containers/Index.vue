@@ -10,7 +10,9 @@
             <span class="android-only">；4.Android手机按back键；5.Android手机按menu键
 							</span>。
             <p style="margin: 10px 15px;">
-              <button type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;" @click="toLogin">登录</button>
+              <button type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;"
+                      @click="toLogin">登录
+              </button>
             </p>
 
           </div>
@@ -97,9 +99,13 @@
     </aside>
     <!--主界面部分-->
     <div class="mui-inner-wrap">
-      <nav-bar nb-title="div模式右滑菜单" :nb-left="nbLeft" :nb-right="nbRight" />
-      <nav-tab :nt-items="ntItems" />
-      <router-view />
+      <nav-bar nb-title="div模式右滑菜单" :nb-left="nbLeft" :nb-right="nbRight"/>
+      <nav-tab :nt-items="ntItems"/>
+      <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+        <div class="mui-scroll">
+          <router-view/>
+        </div>
+      </div>
 
       <!-- off-canvas backdrop -->
       <div class="mui-off-canvas-backdrop"></div>
@@ -108,58 +114,106 @@
 </template>
 
 <script>
-import NavBar from "../components/NavBar";
-import NavTab from "../components/NavTab";
+  import NavBar from "../components/NavBar";
+  import NavTab from "../components/NavTab";
 
-import fetch from "../fetch"
+  import fetch from "../fetch"
 
-export default {
-  components: {
-    NavBar,NavTab },
-  name: "index",
-  data () {
-    return {
-      title:"导航条",
-      nbLeft:{
-        icon:"mui-icon-bars",
-        clickFn(){
-          mui('#offCanvasWrapper').offCanvas().show();
-        }
-      },
-      nbRight:{
-        icon:"mui-action-back",
-        text:"关闭"
-      },
-      ntItems: [
-        {icon:"mui-icon-home",text:"首页"},
-        {icon:"mui-icon-phone",text:"电话"},
-        {icon:"mui-icon-email",text:"邮件"},
-        {icon:"mui-icon-gear",text:"设置"}
-      ]
-    }
-  },
-  methods:{
-    showMenu(){
-      mui('#offCanvasWrapper').offCanvas().show();
+  export default {
+    components: {
+      NavBar, NavTab
     },
-    toLogin(){
-      this.$router.push("login");
-    }
-  },
-  mounted(){
-    //主界面和侧滑菜单界面均支持区域滚动；
-    mui('#offCanvasSideScroll').scroll();
-
-    //实现ios平台原生侧滑关闭页面；
-    if (mui.os.plus && mui.os.ios) {
-      mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
-        plus.webview.currentWebview().setStyle({
-          'popGesture': 'none'
-        });
+    name: "index",
+    data() {
+      return {
+        title: "导航条",
+        nbLeft: {
+          icon: "mui-icon-bars",
+          clickFn() {
+            mui('#offCanvasWrapper').offCanvas().show();
+          }
+        },
+        nbRight: {
+          icon: "mui-action-back",
+          text: "关闭"
+        },
+        ntItems: [
+          {icon: "mui-icon-home", text: "首页"},
+          {icon: "mui-icon-phone", text: "电话"},
+          {icon: "mui-icon-email", text: "邮件"},
+          {icon: "mui-icon-gear", text: "设置"}
+        ],
+        pullRefresher:null
+      }
+    },
+    created(){
+      let vm = this;
+      mui.init({
+        swipeBack: false,
+        pullRefresh: {
+          container: '#pullrefresh',
+          down: {
+            style: 'circle',
+            callback: vm.pulldownRefresh
+          },
+          up: {
+            contentrefresh: '正在加载...',
+            callback: vm.pullupRefresh
+          },
+          disabled:true//刷新、加载功能暂不起作用
+        }
       });
+      //实现ios平台原生侧滑关闭页面；
+      if (mui.os.plus && mui.os.ios) {
+        mui.plusReady(function () { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+          plus.webview.currentWebview().setStyle({
+            'popGesture': 'none'
+          });
+        });
+      }
+      //主界面和侧滑菜单界面均支持区域滚动；
+      mui('#offCanvasSideScroll').scroll();
+    },
+    methods: {
+      showMenu() {
+        mui('#offCanvasWrapper').offCanvas().show();
+      },
+      toLogin() {
+        this.$router.push("login");
+      },
+      getPullRefresher(){
+        if(!this.pullRefresher){
+          this.pullRefresher=mui("#pullrefresh").pullRefresh();
+        }
+        return this.pullRefresher;
+      },
+      pulldownRefresh() {
+        let vm=this;
+        console.info("pull down refresh");
+        setTimeout(()=>{
+          vm.getPullRefresher().endPulldownToRefresh();
+        },1500);
+
+      },
+      pullupRefresh() {
+        let vm=this;
+        console.info("pull up refresh");
+        setTimeout(()=>{
+          vm.getPullRefresher().endPullupToRefresh();
+        },1500);
+      }
+    },
+    mounted() {
+      let vm = this;
+      console.log("index mounted");
+      mui("#pullrefresh").scroll();
+    },
+    updated() {
+      console.log("index updated",this.getPullRefresher());
+      this.getPullRefresher().scrollTo(0,0);
+      this.getPullRefresher().setDisabled(false);//刷新、加载功能起用
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -168,35 +222,43 @@ export default {
   body {
     background-color: #efeff4;
   }
+
   p {
     text-indent: 22px;
   }
+
   span.mui-icon {
     font-size: 14px;
     color: #007aff;
     margin-left: -15px;
     padding-right: 10px;
   }
+
   .mui-off-canvas-left {
     color: #fff;
   }
+
   .title {
     margin: 35px 15px 10px;
   }
-  .title+.content {
+
+  .title + .content {
     margin: 10px 15px 35px;
     color: #bbb;
     text-indent: 1em;
     font-size: 14px;
     line-height: 24px;
   }
+
   input {
     color: #000;
   }
-  .mui-bar-tab{
+
+  .mui-bar-tab {
     height: 60px;
   }
-  .mui-bar-tab~.mui-content {
+
+  .mui-bar-tab ~ .mui-content {
     padding-bottom: 60px;
   }
 </style>

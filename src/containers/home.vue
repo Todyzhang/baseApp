@@ -1,9 +1,6 @@
 <template>
-  <div class="mui-content mui-scroll-wrapper">
-    <div class="mui-scroll">
+    <div class="sub-page">
       <slider :s-imgs="sliderImgs" :s-delay="5" s-indicator="num"/>
-
-
       <div class="mui-content-padded">
         <p>这是可拖动式右滑导航示例，主页面和菜单在一个HTML文件中， 优点是支持拖动手势（跟手），缺点是不支持菜单内容在多页面的复用； 当前页面为主界面，你可以在主界面放置任何内容； 打开侧滑菜单有多种方式： 1、在当前页面向右拖动；
           2、点击页面左上角的
@@ -21,7 +18,6 @@
 
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -42,7 +38,7 @@
       Slider
     },
     mounted(){
-      mui('.mui-scroll-wrapper').scroll();
+
     }
   }
 </script>

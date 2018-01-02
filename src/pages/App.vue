@@ -12,7 +12,7 @@
     name: "app",
     mounted(){
       console.log("store",this.$store.state.user);
-      mui.init();
+      // mui.init();
     }
   }
 </script>

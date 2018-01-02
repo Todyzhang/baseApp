@@ -1,6 +1,6 @@
 <template>
-  <div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-    <div class="mui-scroll">
+
+    <div class="sub-page">
       <div class="title">
         这是subNView模式选项卡中的第1个子页面，该页面展示一个支持单webview模式的下拉刷新、上拉加载的消息列表
       </div>
@@ -11,7 +11,6 @@
 
       </ul>
     </div>
-  </div>
 </template>
 
 <script>
@@ -43,24 +42,7 @@
       }
     },
     mounted() {
-      let vm=this;
 
-      mui.init({
-        swipeBack: false,
-        pullRefresh: {
-          container: '#pullrefresh',
-          down: {
-            style:'circle',
-            callback: vm.pulldownRefresh
-          },
-          up: {
-            contentrefresh: '正在加载...',
-            callback: vm.pullupRefresh
-          },
-          repeat:true
-        }
-      });
-      mui('#pullrefresh').scroll();
     }
   }
 </script>
