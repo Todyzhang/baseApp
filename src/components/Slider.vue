@@ -76,7 +76,8 @@ e.g.
     },
     data() {
       return {
-        sliderId: "slider" + new Date().getTime()
+        sliderId: "slider" + new Date().getTime(),
+        slider:null
       }
     },
     computed: {
@@ -93,13 +94,21 @@ e.g.
         return this.sImgs[this.imgSize - 1]
       }
     },
+    methods: {
+      setSlider() {
+        this.slider = mui("#" + this.sliderId).slider();
+      }
+    },
     mounted() {
-      let slider = mui("#" + this.sliderId);
       if (this.isImgMoveThenOne && this.sDelay) {
-        slider.slider({
+        mui("#" + this.sliderId).slider({
           interval: this.sDelay * 1000
         });
+        this.setSlider();
       }
+    },
+    beforeDestroy() {
+      this.slider && this.slider.destroy();
     }
   }
 </script>

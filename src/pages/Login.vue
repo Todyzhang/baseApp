@@ -61,6 +61,7 @@
         }
       },
       mounted(){
+        console.log("login mounted")
         mui(".mui-input-row input").input();//动态生成input框需重新设置
         //点击清除输入框时需同时置空vue model
         mui(".mui-input-row").on("tap",".mui-icon-clear",(e)=>{

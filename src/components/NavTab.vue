@@ -37,49 +37,7 @@
         this.$router.push("/index/home")
       }
     },
-    // render(createElement) {
-    //   let createIcon = function (icon) {
-    //     return createElement(
-    //       "span",
-    //       {
-    //         "class": ["mui-icon",icon]
-    //       }
-    //     )
-    //   };
-    //   let createText = function (text) {
-    //     return createElement(
-    //       "span",
-    //       {
-    //         "class": "mui-tab-label",
-    //         "domProps": {
-    //           innerHTML: text
-    //         }
-    //       }
-    //     )
-    //   };
-    //   let createItem = function (data) {
-    //     return createElement(
-    //       "a",
-    //       {
-    //         "class": "mui-tab-item"
-    //       },
-    //       [
-    //         createIcon(data.icon),
-    //         createText(data.text)
-    //       ]
-    //     )
-    //   };
-    //
-    //   return createElement(
-    //     "nav",
-    //     {
-    //       "class": ["mui-bar","mui-bar-tab"]
-    //     },
-    //     this.ntItems.map(function (aDom) {
-    //       return createItem(aDom)
-    //     })
-    //   )
-    // },
+
     computed:{
 
     }

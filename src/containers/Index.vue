@@ -171,15 +171,13 @@
           });
         });
       }
-      //主界面和侧滑菜单界面均支持区域滚动；
-      mui('#offCanvasSideScroll').scroll();
     },
     methods: {
       showMenu() {
         mui('#offCanvasWrapper').offCanvas().show();
       },
       toLogin() {
-        this.$router.push("login");
+        this.$router.push("/login");
       },
       getPullRefresher(){
         if(!this.pullRefresher){
@@ -205,13 +203,16 @@
     },
     mounted() {
       let vm = this;
-      console.log("index mounted");
-      mui("#pullrefresh").scroll();
+      //mui("#pullrefresh").scroll();
+      //主界面和侧滑菜单界面均支持区域滚动；
+      mui('#offCanvasSideScroll').scroll();
     },
     updated() {
-      console.log("index updated",this.getPullRefresher());
       this.getPullRefresher().scrollTo(0,0);
       this.getPullRefresher().setDisabled(false);//刷新、加载功能起用
+    },
+    beforeDestroy() {
+      console.log("index destroy");
     }
   }
 </script>
