@@ -1,7 +1,7 @@
 <template>
   <div class="mui-content mui-scroll-wrapper">
     <div class="mui-scroll">
-      <img class="logo" src="../assets/logo.png" />
+      <img class="logo" src="../../assets/logo.png" />
       <form class="login-form">
         <div class="mui-input-row">
           <span class="mui-icon mui-icon-person"></span>
@@ -22,8 +22,8 @@
 
 <script>
   import mui from "mui"
-  import fetch from "../fetch"
-  import * as _ from "../utils/tool"
+  import fetch from "../../fetch/index"
+  import * as _ from "../../utils/tool"
 
     export default {
       name: "login",

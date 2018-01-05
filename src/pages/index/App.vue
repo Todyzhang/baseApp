@@ -18,7 +18,6 @@
 </script>
 
 <style>
-  @import "../../static/lib/css/mui.min.css";
 
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s

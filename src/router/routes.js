@@ -1,8 +1,8 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Index from "@/containers/Index"
-import Login from "@/pages/Login"
-import List from "@/pages/List"
+import Login from "@/pages/login/Login"
+import List from "@/pages/index/pages/list/List"
 import home from "@/containers/home"
 
 Vue.use(Router);
