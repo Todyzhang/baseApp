@@ -18,14 +18,7 @@ module.exports = merge(baseWebpackConfig, {
       'process.env': config.dev.env
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-    // copy custom manifest
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../src/manifest.json'),
-        to: config.build.assetsPublicPath,
-        ignore: ['.*']
-      }
-    ]),
+
     new FriendlyErrorsPlugin()
   ]
 })

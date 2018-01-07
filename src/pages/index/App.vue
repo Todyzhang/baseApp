@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <transition name="fade">
-      <router-view />
-    </transition>
+  <div class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+
+    </div>
   </div>
 </template>
 
@@ -11,7 +11,6 @@
   export default {
     name: "app",
     mounted(){
-      console.log("store",this.$store.state.user);
       // mui.init();
     }
   }

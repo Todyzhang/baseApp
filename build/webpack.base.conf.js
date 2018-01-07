@@ -82,8 +82,14 @@ module.exports = {
       {
         from: resolve('static/lib'),
         to: config.build.assetsRoot + '/mui/'
+      },
+      {
+        from: resolve('src/manifest.json'),
+        to: config.build.assetsRoot,
+        ignore: ['.*']
       }
     ])
+// copy custom manifest
   ]
 }
 
