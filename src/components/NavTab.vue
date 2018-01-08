@@ -25,8 +25,7 @@
     name: "nav-tab",
     props: {
       ntItems: {
-        type: Array,
-        required: true
+        type: Array
       }
     },
     methods:{
@@ -52,6 +51,9 @@
   }
   .mui-bar-tab .mui-tab-item.mui-active{
     color: #f90101;
+  }
+  .mui-bar-tab .mui-tab-item .mui-icon:active{
+    background-size: 100% 100%;
   }
   .mui-icon.icon-home{
     background-image:url(../assets/home.png);

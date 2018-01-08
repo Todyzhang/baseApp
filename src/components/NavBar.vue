@@ -19,10 +19,10 @@ e.g.
 
 <template>
   <header class="mui-bar" :class="cpType">
-    <a v-if="hasLeft" class="mui-btn mui-btn-link mui-btn-link mui-btn-nav mui-pull-left" @tap.stop="cpLeftClickFn">
+    <a v-if="hasLeft" class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" @tap.stop="cpLeftClickFn">
       <span v-if="nbLeft.icon" class="mui-icon" :class="cpIcon('Left')"></span>{{nbLeft.text}}</a>
     <h1 class="mui-title">{{nbTitle}}</h1>
-    <a v-if="hasRight" class="mui-btn mui-btn-link mui-btn-link mui-btn-nav mui-pull-right" @tap.stop="cpRightClickFn">
+    <a v-if="hasRight" class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" @tap.stop="cpRightClickFn">
       <span v-if="nbRight.icon" class="mui-icon" :class="cpIcon('Right')"></span>{{nbRight.text}}</a>
   </header>
 </template>

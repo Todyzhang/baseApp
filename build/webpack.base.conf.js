@@ -83,13 +83,18 @@ module.exports = {
         from: resolve('static/lib'),
         to: config.build.assetsRoot + '/mui/'
       },
+      // copy custom manifest
       {
         from: resolve('src/manifest.json'),
         to: config.build.assetsRoot,
         ignore: ['.*']
       }
-    ])
-// copy custom manifest
+    ]),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: resolve("index.html"),
+      inject: false
+    })
   ]
 }
 
@@ -115,7 +120,7 @@ for (let pathname in pages) {
     conf.inject = 'body';
     //  如果每个html没有进入这里的话，那么全部js将会插入html
     conf.chunks = [pathname];
-    // conf.hash = true;
+    conf.hash = true;
   }
   module.exports.plugins.push(new HtmlWebpackPlugin(conf));
 }
