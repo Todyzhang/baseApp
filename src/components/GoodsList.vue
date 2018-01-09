@@ -1,6 +1,6 @@
 <template>
   <ul class="sn-goods-list mui-clearfix" :style="{backgroundColor: gBgc}">
-    <li v-for="(li,index) in gList">
+    <li v-for="(li,index) in gList" @tap="goodsDetail(li.id)">
       <div class="g-img">
         <img :src="li.img"/>
       </div>
@@ -8,15 +8,17 @@
         <span class="g-label" v-show="li.icon">{{li.icon}}</span>
         {{li.info}}
       </p>
-      <div class="g-footer mui-clearfix">
-        <span>￥{{li.price}}</span>
-        <button type="button" class="mui-btn sn-btn-default mui-pull-right">购买</button>
+      <div class="g-footer">
+        <span>￥{{li.price | keep2Decimal}}</span>
+        <button type="button" class="mui-btn sn-btn-default" @tap.stop="buyNow(li.id)">购买</button>
       </div>
     </li>
   </ul>
 </template>
 
 <script>
+  require("../utils/filter");
+
   export default {
     name: "goods-list",
     props: {
@@ -27,6 +29,16 @@
       gBgc: {
         type: String,
         default: "#fff"
+      }
+    },
+    methods: {
+      goodsDetail(goodsId) {
+        //打开详情页
+        console.log("商品详情页：",goodsId);
+      },
+      buyNow(goodsId) {
+        //购买
+        console.log("购买商品：",goodsId);
       }
     }
   }
@@ -83,11 +95,12 @@
   .g-footer {
     color: #f90101;
     text-align: left;
+    position: relative;
   }
 
   .g-footer > span {
     display: inline-block;
-    vertical-align: text-top;
+    padding-top: 2px;
   }
 
   .sn-btn-default {
@@ -95,5 +108,7 @@
     color: #fff;
     border: 0;
     padding: 3px 12px;
+    position: absolute;
+    right: 0;
   }
 </style>

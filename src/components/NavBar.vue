@@ -96,5 +96,7 @@ e.g.
 </script>
 
 <style scoped>
-
+  .mui-bar{
+    background-color: #fff;
+  }
 </style>

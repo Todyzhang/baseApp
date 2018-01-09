@@ -32,7 +32,7 @@
         }
       },
       mounted() {
-        mui(".mui-scroll-wrapper").scroll();
+        // mui("#"+this.scrollId).scroll();
       }
     }
 </script>
