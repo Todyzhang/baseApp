@@ -1,5 +1,6 @@
 <template>
-  <top-content :bg-color="'#fff'">
+  <top-content :scroll-style="{background:'#fff'}" :is-init-scroll="0">
+    <nav-bar slot="page-header" nb-title="神农集市"/>
     <nav-tab slot="page-footer"/>
   </top-content>
 </template>
@@ -14,10 +15,10 @@
     components: {
       NavBar,
       TopContent,
-      NavTab},
+      NavTab
+    },
     name: "app",
-
-    mounted(){
+    mounted() {
       mui.init();
     }
   }

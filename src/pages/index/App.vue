@@ -1,5 +1,5 @@
 <template>
-  <top-content :bg-color="'#fff'">
+  <top-content :scroll-style="{background:'#fff'}" :is-init-scroll="0">
     <slider :s-imgs="sliderImgs" :s-delay="5" s-indicator="num" />
     <searcher />
     <goods-list :g-list="gList" :g-bgc="'#efefef'"/>
@@ -22,7 +22,8 @@
       GoodsList,
       Searcher,
       TopContent,
-      Slider},
+      Slider
+    },
     name: "app",
     data(){
       return {
@@ -37,29 +38,30 @@
           {id:4,img:require("./imgs/sy-icon-4.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",icon:"",price:"48"}
         ],
         hotList: [
-          {id:5,img:require("./imgs/sy-icon-5.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",icon:"人气",price:"48000"},
-          {id:6,img:require("./imgs/sy-icon-6.png"),info:"超级大芒果",icon:"清仓",price:"4800"},
-          {id:7,img:require("./imgs/sy-icon-7.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",icon:"",price:"48"},
-          {id:8,img:require("./imgs/sy-icon-8.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",icon:"",price:"48"}
+          {id:5,img:require("./imgs/sy-icon-5.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",price:"48000"},
+          {id:6,img:require("./imgs/sy-icon-6.png"),info:"超级大芒果",price:"4800"},
+          {id:7,img:require("./imgs/sy-icon-7.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",price:"48"},
+          {id:8,img:require("./imgs/sy-icon-8.png"),info:"攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",price:"48"}
         ]
       }
     },
     mounted(){
       let vm = this;
-      mui.init({
-        swipeBack: false,
-        pullRefresh: {
-          container: '.mui-scroll-wrapper',
-          down: {
-            style: 'circle',
-            callback: vm.pulldownRefresh
+      this.$nextTick(function(){
+        mui.init({
+          swipeBack: false,
+          pullRefresh: {
+            container: '.mui-scroll-wrapper',
+            down: {
+              style: 'circle',
+              callback: vm.pulldownRefresh
+            }
           }
-        }
+        });
       });
     },
     methods:{
       pulldownRefresh(){
-        let vm=this;
         console.info("pull down refresh");
         //可ajax更新页面
         setTimeout(()=>{
@@ -70,7 +72,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .sn-hot-goods{
     background-color:#f3eee8;
   }

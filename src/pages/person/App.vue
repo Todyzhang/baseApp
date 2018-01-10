@@ -1,5 +1,36 @@
 <template>
-  <top-content :bg-color="'#fff'">
+  <top-content :scroll-style="{background:'#fff'}">
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
+    <p>person center</p>
     <p>person center</p>
   </top-content>
 </template>
@@ -42,40 +73,7 @@
   }
 </script>
 
-<style>
-  .sn-hot-goods{
-    background-color:#f3eee8;
-  }
-  .sn-hot-goods > h3{
-    color:#000;
-    margin:0;
-    padding: 5.32% 2.66% 2.66% 2.66%;
-    position:relative;
-  }
-  .sn-hot-goods > h3 .bar-before,
-  .sn-hot-goods > h3 .bar-after{
-    display: inline-block;
-    vertical-align: middle;
-    position:relative;
-    width:2em;
-    height:1px;
-    margin:0 10px;
-    background-color:#cdcdcd;
-  }
-  .sn-hot-goods > h3 .bar-before:after,
-  .sn-hot-goods > h3 .bar-after:before{
-    content:"";
-    display: inline-block;
-    position:absolute;
-    width:0.5em;
-    height:2px;
-    background-color:#000;
-  }
-  .sn-hot-goods > h3 .bar-before:after{
-    right:0
-  }
-  .sn-hot-goods > h3 .bar-after:before{
-    left:0;
-  }
+<style scoped>
+
 
 </style>

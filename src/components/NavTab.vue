@@ -1,7 +1,7 @@
 <template>
   <nav class="mui-bar mui-bar-tab">
     <a class="mui-tab-item" v-for="(item,index) in items" @tap="showPage(item,index+1)"
-       :class="{'mui-active':tabActive===index+1}">
+       :class="{'mui-active':activeItem===index+1}">
       <span class="mui-icon" :class="item.className"></span>
       <span class="mui-tab-label">{{item.label}}</span>
     </a>
@@ -12,15 +12,21 @@
 
   export default {
     name: "nav-tab",
+    props:{
+      tabActive: {
+        type:[String,Number],
+        default: 1
+      }
+    },
     data() {
       return {
         items: [
-          {url: "index.html", label: "首页", className: "icon-home", is1stShow: !0},
+          {url: "index.html", label: "首页", className: "icon-home", is1stShow: !1},
           {url: "list.html", label: "全部商品", className: "icon-goods", is1stShow: !1},
           {url: "cart.html", label: "购物车", className: "icon-cart", is1stShow: !1},
           {url: "person.html", label: "个人中心", className: "icon-person", is1stShow: !1}
         ],
-        tabActive:1
+        activeItem:this.tabActive
       }
     },
     computed: {
@@ -30,39 +36,37 @@
     },
     methods: {
       showPage(page, num) {
-        if (num === this.tabActive) {
+        if (num === this.activeItem) {
           return;
         }
-        //Avoid mutating a prop directly since the value will be overwritten whenever the parent component re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "tabActive"
-
 
         //若为iOS平台或非首次显示，则直接显示
         if (mui.os.ios || !page.is1stShow) {
           plus.webview.show(page.url);
         } else {
-          //否则，使用fade-in动画，且保存变量
+          //否则，使用fade-in动画显示
           plus.webview.show(page.url, "fade-in", 300);
         }
         //隐藏当前;
-        plus.webview.hide(this.items[this.tabActive - 1].url);
-        this.tabActive = num;
+        plus.webview.hide(this.items[this.activeItem - 1].url);
+        this.activeItem = num;
       }
     },
     mounted() {
-      let vm = this;
-
       //创建子页面，首个选项卡页面显示，其它均隐藏；
-      mui.plusReady(function () {
+      mui.plusReady(() => {
         let self = plus.webview.currentWebview();
         let pageUrl, sub;
-        for (let i = 0; i < vm.itemsLen; i++) {
-          pageUrl = vm.items[i].url;
+        for (let i = 0; i < this.itemsLen; i++) {
+          pageUrl = this.items[i].url;
           sub = plus.webview.create(pageUrl, pageUrl, {
-            bottom: '61px',
-            top: '0px'
+            bottom: '54px',
+            top: '45px'
           });
           if (i > 0) {
             sub.hide();
+          }else{
+            this.items[i].is1stShow=!1;
           }
           self.append(sub);
         }
