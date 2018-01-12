@@ -1,14 +1,15 @@
 <template>
   <top-content :scroll-style="{top:'106px'}" :is-init-scroll="0">
-    <div slot="page-header">
-      <searcher style="background:#fff;"/>
-      <nav class="sn-tab-bar" :class="isTabShow">
-        <a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"
-           @tap="tabItemClick(index,tab)">
-          <span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>
-        </a>
-      </nav>
-    </div>
+    <nav-bar slot="page-header" nb-title="登录" />
+    <!--<div slot="page-header">-->
+      <!--<searcher style="background:#fff;"/>-->
+      <!--<nav class="sn-tab-bar mui-bar mui-bar-tab" :class="isTabShow">-->
+        <!--<a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"-->
+           <!--@tap="tabItemClick(index,tab)">-->
+          <!--<span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>-->
+        <!--</a>-->
+      <!--</nav>-->
+    <!--</div>-->
     <goods-list :g-list="gList" :g-bgc="'#efefef'"/>
   </top-content>
 </template>
@@ -19,9 +20,11 @@
   import TopContent from "../../containers/topContent";
   import Searcher from "../../components/Seacher";
   import GoodsList from "../../components/GoodsList";
+  import NavBar from "../../components/NavBar";
 
   export default {
     components: {
+      NavBar,
       GoodsList,
       Searcher,
       TopContent,
@@ -146,6 +149,7 @@
       },
       //上拉加载更多
       pullupRefresh() {
+        this.getPullRefresher().endPullupToRefresh(true);
       },
       handleScroll(e) {
         var y = window.scrollY;
@@ -171,13 +175,12 @@
           }
         }
       });
-      console.log("isPlus",mui.os.plus);
 
-      if (mui.os.plus) {
-        document.addEventListener('touchmove', this.handleScroll);
-      } else {
-        mui(".mui-scroll-wrapper")[0].addEventListener("scroll", this.handleScroll);
-      }
+      // if (mui.os.plus) {
+      //   window.addEventListener('touchmove', this.handleScroll);
+      // }
+      // window.addEventListener("scroll", this.handleScroll);
+
     }
   }
 </script>
@@ -199,6 +202,7 @@
     display: table-cell;
     color: #333;
     padding: 12px;
+    width:25%;
   }
 
   .sn-tab-bar > a.active {
