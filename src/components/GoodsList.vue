@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  require("../utils/filter");
+  require("@/utils/filter");
 
   export default {
     name: "goods-list",
