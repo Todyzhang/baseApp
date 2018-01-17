@@ -34,12 +34,13 @@
             <div class="mui-table-cell mui-col-xs-8 mui-text-left cart-item-goods-info">
               <h4 class="mui-ellipsis-2">{{li.info}}</h4>
               <p class="goods-spec">规格：{{li.spec}}</p>
-              <p class="goods-price-wrap" v-show="!isEdit">￥<span class="goods-price">{{parseInt(li.price)}}</span>.{{li.price |
-                twoDecimal}}<span v-show="li.state===0" class="mui-pull-right">×{{li.buyNum}}</span></p>
-              <p v-show="isEdit && li.state===0" class="goods-edit-num">
-                <a class="minus-num" @tap.stop="minusNum(li)"></a>
-                <input type="number" v-model="li.buyNum" :style="{'width':(li.buyNum.toString().length*0.5+0.25)+'em'}" />
-                <a class="add-num" @tap.stop="addNum(li)"></a>
+              <p class="goods-price-wrap" v-if="!isEdit">￥<span class="goods-price">{{parseInt(li.price)}}</span>
+                .{{li.price | twoDecimal}}<span v-show="li.state===0" class="mui-pull-right">×{{li.buyNum}}</span></p>
+              <p v-if="isEdit && li.state===0" class="goods-edit-num mui-pull-right">
+                <button class="minus-num" @tap.stop="minusNum(li)"></button>
+                <input type="tel" v-model="li.buyNum" v-enter-number="3" @blur="inputBlur(li,$event)"
+                       :style="{'width':(li.buyNum.toString().length*0.5+0.5)+'em'}"/>
+                <button class="add-num" @tap.stop="addNum(li)"></button>
               </p>
             </div>
           </div>
@@ -67,6 +68,7 @@
   import * as _ from "@/utils/tool";
 
   require("@/utils/filter");
+  require("@/utils/directives");
 
   export default {
     components: {
@@ -216,8 +218,14 @@
         mui.swipeoutClose(li);
         this.gList.splice(index, 1);
       },
+      //编辑||完成
       menuBtn() {
         this.isEdit = !this.isEdit;
+        if(!this.isEdit){
+          mui.each(mui(".mui-slider-handle[style]"),(i,v)=>{
+            v.removeAttribute("style");
+          });
+        }
         mui.each(this.gList, (i, v) => {
           v.selected = !1;
         });
@@ -245,13 +253,21 @@
         console.log(type, ids);
       },
       addNum(li) {
-        li.buyNum++;
+        let num = +li.buyNum;
+        if (num >= 9999999) return;
+        li.buyNum = num + 1;
       },
-      minusNum(li){
-        li.buyNum--;
+      minusNum(li) {
+        if (li.buyNum > 1) {
+          li.buyNum = +li.buyNum - 1;
+        }
+      },
+      inputBlur(li, e) {
+        if (!e.target.value) {
+          li.buyNum = e.target.value = 1;
+        }
       }
-    }
-    ,
+    },
     mounted() {
       mui.init();
       setTimeout(() => {
@@ -343,12 +359,18 @@
 
   .cart-item-goods-info {
     padding-left: 10px;
+    vertical-align: top;
   }
 
   .cart-item-goods-info > h4 {
     height: 2.5em;
     line-height: 1.25;
     color: #333;
+    margin-top: 0;
+  }
+
+  .cart-item-goods-info > p.goods-spec:last-child {
+    margin-bottom: 30px;
   }
 
   .disabled .cart-item-goods-info > h4,
@@ -510,28 +532,34 @@
     margin: 10px;
     padding: 6px 20px;
   }
-  .goods-edit-num{
-    margin-top:15px;
-    height:2em;
-    line-height:2em;
+
+  .goods-edit-num {
+    margin-top: 15px;
+    height: 3em;
+    line-height: 3em;
   }
-  .goods-edit-num>a{
+
+  .goods-edit-num > button {
     display: inline-block;
-    width:2em;
-    height:2em;
-    background:url("./imgs/minus.png") no-repeat center;
-    background-size:1.5em;
-    vertical-align: middle;
+    width: 3em;
+    height: 3em;
+    background: url("./imgs/minus.png") no-repeat center;
+    background-size: 2.25em;
+    vertical-align: top;
+    border: none;
+    padding: 0;
   }
-  .goods-edit-num>a.add-num{
-    background-image:url("./imgs/add.png");
+
+  .goods-edit-num > button.add-num {
+    background-image: url("./imgs/add.png");
   }
-  .goods-edit-num>input{
-    margin:0;
-    padding:0;
-    border:none;
-    height:2em;
-    line-height:2em;
+
+  .goods-edit-num > input {
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 1em;
+    display: inline-block;
   }
 </style>
 <style>
