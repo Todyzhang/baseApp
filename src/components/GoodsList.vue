@@ -17,10 +17,13 @@
 </template>
 
 <script>
-  require("@/utils/filter");
+  import {keep2Decimal} from "../utils/filter";
 
   export default {
     name: "goods-list",
+    components: {
+      keep2Decimal
+    },
     props: {
       gList: {
         type: Array,
@@ -34,11 +37,11 @@
     methods: {
       goodsDetail(goodsId) {
         //打开详情页
-        console.log("商品详情页：",goodsId);
+        console.log("商品详情页：", goodsId);
       },
       buyNow(goodsId) {
         //购买
-        console.log("购买商品：",goodsId);
+        console.log("购买商品：", goodsId);
       }
     }
   }
@@ -72,17 +75,19 @@
   .g-img {
     padding: 15%;
   }
-  .mui-ellipsis-2{
-    height:3em;
-    text-align:left;
+
+  .mui-ellipsis-2 {
+    height: 3em;
+    text-align: left;
   }
+
   .g-label {
     color: #f90101;
     border: 1px solid #f90101;
-    transform:scale(0.9);
+    transform: scale(0.9);
     display: inline-block;
     padding: 0 8px;
-    border-radius:3px;
+    border-radius: 3px;
   }
 
   .g-img > img {

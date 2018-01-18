@@ -1,15 +1,14 @@
 <template>
   <top-content :scroll-style="{top:'106px'}" :is-init-scroll="0">
-    <nav-bar slot="page-header" nb-title="登录" />
-    <!--<div slot="page-header">-->
-      <!--<searcher style="background:#fff;"/>-->
-      <!--<nav class="sn-tab-bar mui-bar mui-bar-tab" :class="isTabShow">-->
-        <!--<a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"-->
-           <!--@tap="tabItemClick(index,tab)">-->
-          <!--<span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>-->
-        <!--</a>-->
-      <!--</nav>-->
-    <!--</div>-->
+    <div slot="page-header">
+      <searcher style="background:#fff;"/>
+      <nav class="sn-tab-bar mui-bar mui-bar-tab" :class="isTabShow">
+        <a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"
+           @tap="tabItemClick(index,tab)">
+          <span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>
+        </a>
+      </nav>
+    </div>
     <goods-list :g-list="gList" :g-bgc="'#efefef'"/>
   </top-content>
 </template>

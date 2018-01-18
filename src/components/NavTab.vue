@@ -12,9 +12,9 @@
 
   export default {
     name: "nav-tab",
-    props:{
+    props: {
       tabActive: {
-        type:[String,Number],
+        type: [String, Number],
         default: 1
       }
     },
@@ -26,7 +26,7 @@
           {url: "cart.html", label: "购物车", className: "icon-cart", is1stShow: !1},
           {url: "person.html", label: "个人中心", className: "icon-person", is1stShow: !1}
         ],
-        activeItem:this.tabActive
+        activeItem: this.tabActive
       }
     },
     computed: {
@@ -65,8 +65,8 @@
           });
           if (i > 0) {
             sub.hide();
-          }else{
-            this.items[i].is1stShow=!1;
+          } else {
+            this.items[i].is1stShow = !1;
           }
           self.append(sub);
         }

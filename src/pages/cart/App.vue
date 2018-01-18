@@ -36,12 +36,8 @@
               <p class="goods-spec">规格：{{li.spec}}</p>
               <p class="goods-price-wrap" v-if="!isEdit">￥<span class="goods-price">{{parseInt(li.price)}}</span>
                 .{{li.price | twoDecimal}}<span v-show="li.state===0" class="mui-pull-right">×{{li.buyNum}}</span></p>
-              <p v-if="isEdit && li.state===0" class="goods-edit-num mui-pull-right">
-                <button class="minus-num" @tap.stop="minusNum(li)"></button>
-                <input type="tel" v-model="li.buyNum" v-enter-number="3" @blur="inputBlur(li,$event)"
-                       :style="{'width':(li.buyNum.toString().length*0.5+0.5)+'em'}"/>
-                <button class="add-num" @tap.stop="addNum(li)"></button>
-              </p>
+              <number-box v-if="isEdit && li.state===0" class="mui-pull-right" v-model="li.buyNum"/>
+
             </div>
           </div>
         </div>
@@ -65,17 +61,19 @@
   import TopContent from "../../containers/topContent";
   import Searcher from "../../components/Seacher";
   import NavBar from "../../components/NavBar";
-  import * as _ from "@/utils/tool";
+  import NumberBox from "../../components/numberBox";
+  import {twoDecimal, miliFormat} from "../../utils/filter";
 
-  require("@/utils/filter");
-  require("@/utils/directives");
 
   export default {
     components: {
       NavBar,
       Searcher,
       TopContent,
-      NavTab
+      NavTab,
+      NumberBox,
+      twoDecimal,
+      miliFormat
     },
     name: "app",
     data() {
@@ -215,14 +213,19 @@
       },
       deleteBtn(e, index) {
         let li = e.target.parentElement.parentElement;
-        mui.swipeoutClose(li);
-        this.gList.splice(index, 1);
+        mui.confirm("", "是否确定要删除此商品?", ["确定", "取消"], (e) => {
+          if (e.index === 0) {
+            this.gList.splice(index, 1);
+          }
+          mui.swipeoutClose(li);
+        }, "div");
+
       },
       //编辑||完成
       menuBtn() {
         this.isEdit = !this.isEdit;
-        if(!this.isEdit){
-          mui.each(mui(".mui-slider-handle[style]"),(i,v)=>{
+        if (!this.isEdit) {
+          mui.each(mui(".mui-slider-handle[style]"), (i, v) => {
             v.removeAttribute("style");
           });
         }
@@ -234,7 +237,6 @@
       goodsEditBtn(type) {
         let len = this.goodsValidLen, list = [...this.gList], i = len - 1, ids = [], li;
         if (this.selected === 0) {
-          //_.alert("请选择要操作的商品","提示");
           return;
         }
         for (; i >= 0; i--) {
@@ -260,11 +262,6 @@
       minusNum(li) {
         if (li.buyNum > 1) {
           li.buyNum = +li.buyNum - 1;
-        }
-      },
-      inputBlur(li, e) {
-        if (!e.target.value) {
-          li.buyNum = e.target.value = 1;
         }
       }
     },
@@ -309,7 +306,7 @@
   }
 
   .cart-list-select-icon {
-    background: url("./imgs/checkbox.png") no-repeat center;
+    background: url("../../assets/checkbox.png") no-repeat center;
     width: 1em;
     height: 1em;
     background-size: 1em;
@@ -317,7 +314,7 @@
   }
 
   .cart-list-select-icon.selected {
-    background-image: url("./imgs/checkbox_on.png");
+    background-image: url("../../assets/checkbox_on.png");
   }
 
   .mui-pager li > a {
@@ -533,37 +530,40 @@
     padding: 6px 20px;
   }
 
-  .goods-edit-num {
-    margin-top: 15px;
-    height: 3em;
-    line-height: 3em;
-  }
 
-  .goods-edit-num > button {
-    display: inline-block;
-    width: 3em;
-    height: 3em;
-    background: url("./imgs/minus.png") no-repeat center;
-    background-size: 2.25em;
-    vertical-align: top;
-    border: none;
-    padding: 0;
-  }
-
-  .goods-edit-num > button.add-num {
-    background-image: url("./imgs/add.png");
-  }
-
-  .goods-edit-num > input {
-    margin: 0;
-    padding: 0;
-    border: none;
-    height: 1em;
-    display: inline-block;
-  }
 </style>
 <style>
   .mui-bar.mui-table ~ .mui-content {
     padding-bottom: 50px;
+  }
+
+  .mui-popup {
+    border-radius: 5px;
+  }
+
+  .mui-popup-inner {
+    border-radius: 5px 5px 0 0;
+    padding: 30px 15px;
+  }
+
+  .mui-popup-button:first-child {
+    border-radius: 0 0 0 5px;
+    color: #fff;
+    background: #f90101;
+  }
+
+  .mui-popup-button:last-child {
+    border-radius: 0 0 5px 0;
+    color: #333;
+  }
+
+  .mui-popup-button.mui-popup-button-bold {
+    font-weight: 400;
+  }
+
+  .mui-popup-title {
+    font-weight: 400;
+    font-size: 16px;
+    color: #333;
   }
 </style>
