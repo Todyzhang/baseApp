@@ -1,45 +1,33 @@
 <template>
   <top-content :scroll-style="{background:'#f2f2f2'}">
     <header v-if="gList.length>0" class="mui-bar mui-bar-nav" slot="page-header">
-      <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" @tap.stop="chooseAll">
-        <span class="mui-icon cart-list-select-icon" :class="{'selected':isAll}"></span>全选</a>
+      <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" @tap.stop.prevent="chooseAll">
+        <selecter-icon :selected="isAll"/>
+        全选</a>
       <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" @tap.stop="menuBtn()">
         <span class="mui-icon"></span>{{isEdit?'完成':'编辑'}}</a>
     </header>
-    <footer v-if="gList.length>0" class="mui-bar mui-table" slot="page-footer">
-      <p v-show="!isEdit" class="mui-table-cell mui-col-xs-8 goods-total" :class="{'mui-text-right':total===0}">
-        <span>合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>
-      </p>
-      <a v-show="!isEdit" class="mui-table-cell mui-col-xs-4 cart-btn-important" :class="{'disabled':selected===0}">去结算({{selected}})</a>
-      <a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important2" :class="{'disabled':selected===0}"
-         @tap.stop="goodsEditBtn('fav')">移至收藏夹</a>
-      <a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important" :class="{'disabled':selected===0}"
-         @tap.stop="goodsEditBtn('del')">删除</a>
-    </footer>
-    <ul v-show="gList.length>0" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+
+    <!--<footer v-if="gList.length>0" class="mui-bar mui-table" slot="page-footer">-->
+      <!--<p v-show="!isEdit" class="mui-table-cell mui-col-xs-8 goods-total" :class="{'mui-text-right':total===0}">-->
+        <!--<span>合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>-->
+      <!--</p>-->
+      <!--<a v-show="!isEdit" class="mui-table-cell mui-col-xs-4 cart-btn-important" :class="{'disabled':selected===0}">去结算({{selected}})</a>-->
+      <!--<a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important2" :class="{'disabled':selected===0}"-->
+         <!--@tap.stop="goodsEditBtn('fav')">移至收藏夹</a>-->
+      <!--<a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important" :class="{'disabled':selected===0}"-->
+         <!--@tap.stop="goodsEditBtn('del')">删除</a>-->
+    <!--</footer>-->
+    <two-btns class="mui-bar" v-if="gList.length>0" :btns="[{name:'移至收藏夹',disabled:selected===0},{name:'删除',disabled:selected===0}]" @active="goodsEditBtn" slot="page-footer" />
+
+    <ul v-show="gList.length>0" class="mui-table-view">
       <li class="mui-table-view-cell" v-for="(li,index) in cartList" :key="index" :class="{'disabled':li.state>0}">
         <div class="mui-slider-right mui-disabled" v-if="isEdit">
           <a class="mui-btn goods-delete-btn" @tap.stop="deleteBtn($event,index)">删除</a>
         </div>
         <div :class="{'mui-slider-handle':isEdit}">
           <p class="goods-state" v-if="li.state>0">该商品已{{showGoods(li.state)}}</p>
-          <div class="mui-table">
-            <div class="mui-table-cell mui-col-xs-1" @tap.stop="chooseGoods(li)">
-              <span
-                :class="[li.selected?'selected':'',li.state>0&&!isEdit?'goods-invalid':'mui-icon cart-list-select-icon']"></span>
-            </div>
-            <div class="mui-table-cell mui-col-xs-3 cart-item-goods-img">
-              <img :src="li.img"/>
-            </div>
-            <div class="mui-table-cell mui-col-xs-8 mui-text-left cart-item-goods-info">
-              <h4 class="mui-ellipsis-2">{{li.info}}</h4>
-              <p class="goods-spec">规格：{{li.spec}}</p>
-              <p class="goods-price-wrap" v-if="!isEdit">￥<span class="goods-price">{{parseInt(li.price)}}</span>
-                .{{li.price | twoDecimal}}<span v-show="li.state===0" class="mui-pull-right">×{{li.buyNum}}</span></p>
-              <number-box v-if="isEdit && li.state===0" class="mui-pull-right" v-model="li.buyNum"/>
-
-            </div>
-          </div>
+          <goods-cell :goodsData="li" :isEdit="isEdit"/>
         </div>
       </li>
     </ul>
@@ -57,23 +45,19 @@
 
 <script>
 
-  import NavTab from "../../components/NavTab";
   import TopContent from "../../containers/topContent";
-  import Searcher from "../../components/Seacher";
-  import NavBar from "../../components/NavBar";
-  import NumberBox from "../../components/numberBox";
-  import {twoDecimal, miliFormat} from "../../utils/filter";
+  import SelecterIcon from "../../components/selecterIcon";
+  import GoodsCell from "../../components/goodsCell";
+  import {keep2Decimal, miliFormat} from "../../utils/filter";
+  import TwoBtns from "../../components/twoBtns";
 
 
   export default {
     components: {
-      NavBar,
-      Searcher,
-      TopContent,
-      NavTab,
-      NumberBox,
-      twoDecimal,
-      miliFormat
+      TwoBtns,
+      GoodsCell,
+      SelecterIcon,
+      TopContent
     },
     name: "app",
     data() {
@@ -207,10 +191,7 @@
           }
         });
       },
-      chooseGoods(goods) {
-        if (goods.state > 0 && !this.isEdit) return;
-        goods.selected = !goods.selected;
-      },
+
       deleteBtn(e, index) {
         let li = e.target.parentElement.parentElement;
         mui.confirm("", "是否确定要删除此商品?", ["确定", "取消"], (e) => {
@@ -236,6 +217,7 @@
 
       goodsEditBtn(type) {
         let len = this.goodsValidLen, list = [...this.gList], i = len - 1, ids = [], li;
+        debugger;
         if (this.selected === 0) {
           return;
         }
@@ -275,7 +257,8 @@
           spec: "2kg",
           price: 48.99,
           buyNum: 1,
-          state: 0
+          state: 0,
+          oldPrice: 53.99
         })
       }, 2000)
     }
@@ -305,18 +288,6 @@
     margin-right: 10px;
   }
 
-  .cart-list-select-icon {
-    background: url("../../assets/checkbox.png") no-repeat center;
-    width: 1em;
-    height: 1em;
-    background-size: 1em;
-    vertical-align: sub;
-  }
-
-  .cart-list-select-icon.selected {
-    background-image: url("../../assets/checkbox_on.png");
-  }
-
   .mui-pager li > a {
     display: block;
     padding: 0;
@@ -334,90 +305,6 @@
   .mui-table-view-cell.disabled,
   .mui-table-view-cell.disabled .mui-slider-handle {
     background: #f2f2f2;
-  }
-
-  .mui-table-cell {
-    vertical-align: middle;
-  }
-
-  .mui-table-cell.cart-item-goods-img {
-    border: 1px solid #e1e1e1;
-    padding: 10px;
-    border-radius: 3px;
-    background: #fff;
-  }
-
-  .mui-table-cell.cart-item-goods-img > img {
-    display: block;
-    width: 100%;
-    border-radius: 50%;
-    border: 1px solid #000;
-  }
-
-  .cart-item-goods-info {
-    padding-left: 10px;
-    vertical-align: top;
-  }
-
-  .cart-item-goods-info > h4 {
-    height: 2.5em;
-    line-height: 1.25;
-    color: #333;
-    margin-top: 0;
-  }
-
-  .cart-item-goods-info > p.goods-spec:last-child {
-    margin-bottom: 30px;
-  }
-
-  .disabled .cart-item-goods-info > h4,
-  .disabled .goods-price-wrap {
-    color: #999;
-  }
-
-  .goods-state {
-    line-height: 3;
-    font-size: 16px;
-    border-bottom: 1px solid #e1e1e1;
-    margin: -10px -3% 10px -3%;
-    text-align: left;
-    padding-left: 3%;
-    color: #666;
-  }
-
-  .goods-spec {
-    color: #999;
-    font-size: 16px;
-  }
-
-  .goods-invalid {
-    font-size: 12px;
-  }
-
-  .goods-invalid:after {
-    content: "无效";
-    display: block;
-    background: #a8a8a8;
-    border-radius: 3px;
-    color: #fff;
-    font-size: 10px;
-    white-space: nowrap;
-    transform: scale(.8)
-  }
-
-  .goods-price-wrap {
-    color: #f90101;
-    font-size: 16px;
-    margin-left: -3px;
-    margin-top: 15px;
-  }
-
-  .goods-price-wrap > .goods-price {
-    font-size: 20px;
-  }
-
-  .goods-price-wrap > .mui-pull-right {
-    color: #999;
   }
 
   .mui-table-view-cell:after {
@@ -450,41 +337,7 @@
     padding-right: 15px;
   }
 
-  .cart-btn-important {
-    background: #f90101;
-    color: #fff;
-    height: 50px;
-    line-height: 50px;
-  }
 
-  .cart-btn-important:active {
-    background: #e00000;
-  }
-
-  .cart-btn-important.disabled,
-  .cart-btn-important2.disabled {
-    background: #999;
-  }
-
-  .cart-btn-important.disabled:active,
-  .cart-btn-important2.disabled:active {
-    background: #999;
-  }
-
-  .cart-btn-important2.disabled ~ .disabled {
-    border-left: 1px solid #e1e1e1;
-  }
-
-  .cart-btn-important2 {
-    background: #ff9600;
-    color: #fff;
-    height: 50px;
-    line-height: 50px;
-  }
-
-  .cart-btn-important2:active {
-    background: #f08d00;
-  }
 
   .mui-btn.goods-delete-btn {
     background: #f90101;
