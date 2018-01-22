@@ -60,4 +60,12 @@ e.g.
   .mui-scroll {
     min-height: 80%;
   }
+  .mui-bar.mui-table {
+    bottom: 0;
+    padding: 0;
+    height: 50px;
+  }
+  .mui-table-view>li.mui-table-view-cell{
+    display: block;
+  }
 </style>

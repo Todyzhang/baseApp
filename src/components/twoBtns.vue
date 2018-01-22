@@ -1,7 +1,7 @@
 <template>
   <div class="mui-table">
     <a class="mui-table-cell mui-col-xs-6 goods-btn"
-       v-for="(btn,index) in btns" :class="{'disabled':btn.disabled}"
+       v-for="(btn,index) in tbBtns" :class="{'disabled':btn.disabled}"
        @tap.stop="btnClickFn(index)">{{btn.name}}</a>
   </div>
 </template>
@@ -10,14 +10,14 @@
   export default {
     name: "two-btns",
     props: {
-      btns: {
+      tbBtns: {
         type: Array,
-        require:true
+        require: true
       }
     },
     methods: {
       btnClickFn(index) {
-        this.$emit("active",index);
+        this.$emit("tb-active", index);
       }
     }
   }
@@ -39,15 +39,16 @@
     border-left: 1px solid #e1e1e1;
   }
 
-  .mui-table>.goods-btn:last-child {
+  .goods-btn:last-child {
     background: #ff9600;
   }
 
-  .mui-table>.goods-btn:last-child:active {
+  .goods-btn:last-child:active {
     background: #f08d00;
   }
-  .mui-table>.goods-btn.disabled,
-  .mui-table>.goods-btn.disabled:active{
+
+  .goods-btn.disabled,
+  .goods-btn.disabled:active {
     background: #999;
   }
 </style>

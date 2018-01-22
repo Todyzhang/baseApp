@@ -1,38 +1,36 @@
 <template>
   <top-content :scroll-style="{background:'#f2f2f2'}">
-    <header v-if="gList.length>0" class="mui-bar mui-bar-nav" slot="page-header">
-      <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" @tap.stop.prevent="chooseAll">
-        <selecter-icon :selected="isAll"/>
-        全选</a>
-      <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" @tap.stop="menuBtn()">
-        <span class="mui-icon"></span>{{isEdit?'完成':'编辑'}}</a>
-    </header>
-
-    <!--<footer v-if="gList.length>0" class="mui-bar mui-table" slot="page-footer">-->
-      <!--<p v-show="!isEdit" class="mui-table-cell mui-col-xs-8 goods-total" :class="{'mui-text-right':total===0}">-->
-        <!--<span>合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>-->
-      <!--</p>-->
-      <!--<a v-show="!isEdit" class="mui-table-cell mui-col-xs-4 cart-btn-important" :class="{'disabled':selected===0}">去结算({{selected}})</a>-->
-      <!--<a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important2" :class="{'disabled':selected===0}"-->
-         <!--@tap.stop="goodsEditBtn('fav')">移至收藏夹</a>-->
-      <!--<a v-show="isEdit" class="mui-table-cell mui-col-xs-6 cart-btn-important" :class="{'disabled':selected===0}"-->
-         <!--@tap.stop="goodsEditBtn('del')">删除</a>-->
-    <!--</footer>-->
-    <two-btns class="mui-bar" v-if="gList.length>0" :btns="[{name:'移至收藏夹',disabled:selected===0},{name:'删除',disabled:selected===0}]" @active="goodsEditBtn" slot="page-footer" />
-
-    <ul v-show="gList.length>0" class="mui-table-view">
-      <li class="mui-table-view-cell" v-for="(li,index) in cartList" :key="index" :class="{'disabled':li.state>0}">
-        <div class="mui-slider-right mui-disabled" v-if="isEdit">
-          <a class="mui-btn goods-delete-btn" @tap.stop="deleteBtn($event,index)">删除</a>
-        </div>
-        <div :class="{'mui-slider-handle':isEdit}">
-          <p class="goods-state" v-if="li.state>0">该商品已{{showGoods(li.state)}}</p>
-          <goods-cell :goodsData="li" :isEdit="isEdit"/>
-        </div>
-      </li>
-    </ul>
-
-    <div v-show="gList.length===0" class="cart-empty">
+    <template v-if="isNotEmpty">
+      <header class="mui-bar mui-bar-nav" slot="page-header">
+        <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-left" @tap.stop.prevent="chooseAll">
+          <selecter-icon :selected="isAll"/>
+          全选</a>
+        <a class="mui-btn mui-btn-link mui-btn-nav mui-pull-right" @tap.stop="menuBtn()">
+          <span class="mui-icon"></span>{{isEdit?'完成':'编辑'}}</a>
+      </header>
+      <component :is="isEdit?'TwoBtns':'InfoBtn'"
+                 class="mui-bar"
+                 :tb-btns="[{name:'移至收藏夹',disabled:isSelectedEmpty},{name:'删除',disabled:isSelectedEmpty}]"
+                 @tb-active="goodsEditBtn"
+                 :ib-btn="{name:'去结算('+selected+')',disabled:isSelectedEmpty}"
+                 :ib-info-class="{'mui-text-right':total===0}"
+                 @ib-active=""
+                 slot="page-footer">
+        <span class="goods-total">合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>
+      </component>
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell" v-for="(li,index) in cartList" :key="index" :class="{'disabled':li.state>0}">
+          <div class="mui-slider-right mui-disabled" v-if="isEdit">
+            <a class="mui-btn goods-delete-btn" @tap.stop="deleteBtn($event,index)">删除</a>
+          </div>
+          <div :class="{'mui-slider-handle':isEdit}">
+            <p class="goods-state" v-if="li.state>0">该商品已{{showGoods(li.state)}}</p>
+            <goods-cell :goodsData="li" :isEdit="isEdit"/>
+          </div>
+        </li>
+      </ul>
+    </template>
+    <div v-if="isEmpty" class="cart-empty">
       <figure>
         <img src="./imgs/empty_cart.png"/>
         <figcaption>您的购物车内还没有商品</figcaption>
@@ -50,10 +48,11 @@
   import GoodsCell from "../../components/goodsCell";
   import {keep2Decimal, miliFormat} from "../../utils/filter";
   import TwoBtns from "../../components/twoBtns";
-
+  import InfoBtn from "../../components/infoBtn";
 
   export default {
     components: {
+      InfoBtn,
       TwoBtns,
       GoodsCell,
       SelecterIcon,
@@ -164,6 +163,18 @@
       isAll() {
         return this.selected === this.goodsValidLen;
       },
+      isSelectedEmpty() {
+        return this.selected === 0;
+      },
+      gListLen() {
+        return this.gList.length;
+      },
+      isEmpty() {
+        return this.gListLen===0;
+      },
+      isNotEmpty() {
+        return this.gListLen>0;
+      },
       selected() {
         //选中个数
         let selected = 0;
@@ -214,10 +225,17 @@
           v.selected = !1;
         });
       },
+      editCallback(list){
+        this.gList = list;
+        //更新滚动条位置
+        setTimeout(() => {
+          this.getScroller.refresh();
+        }, 0);
+      },
 
       goodsEditBtn(type) {
         let len = this.goodsValidLen, list = [...this.gList], i = len - 1, ids = [], li;
-        debugger;
+
         if (this.selected === 0) {
           return;
         }
@@ -228,23 +246,18 @@
             ids.push(li.id);
           }
         }
-        this.gList = list;
-        //更新滚动条位置
-        setTimeout(() => {
-          this.getScroller.refresh();
-        }, 0);
+        if(type===1){
+          mui.confirm("", "是否确定要删除这些商品?", ["确定", "取消"], (e) => {
+            if(e.index===0) {
+              this.editCallback(list);
+            }
+          }, "div");
+        }else{
+          this.editCallback(list);
+        }
+
         //todo 移到收藏夹及删除ajax操作
         console.log(type, ids);
-      },
-      addNum(li) {
-        let num = +li.buyNum;
-        if (num >= 9999999) return;
-        li.buyNum = num + 1;
-      },
-      minusNum(li) {
-        if (li.buyNum > 1) {
-          li.buyNum = +li.buyNum - 1;
-        }
       }
     },
     mounted() {
@@ -312,32 +325,13 @@
     color: #e1e1e1;
   }
 
-  .mui-bar.mui-table {
-    bottom: 0;
-    padding: 0;
-    height: 50px;
+
+  .goods-state{
+    text-align:left;
+    border-bottom:1px solid #e1e1e1;
+    margin: 0 -3% 10px -3%;
+    padding: 0 0 10px 3%;
   }
-
-  .goods-total {
-    color: #000;
-    font-size: 16px;
-  }
-
-  .goods-total > span:first-child {
-    font-size: 20px;
-  }
-
-  .goods-total > span:last-child {
-    font-size: 14px;
-    display: inline-block;
-    padding-left: 15px;
-  }
-
-  .goods-total.mui-text-right {
-    padding-right: 15px;
-  }
-
-
 
   .mui-btn.goods-delete-btn {
     background: #f90101;
@@ -351,6 +345,16 @@
 
   .mui-pager .mui-disabled > a {
     opacity: 1;
+  }
+
+  .goods-total {
+    font-size: 20px;
+  }
+
+  .mui-tab-label {
+    font-size: 14px;
+    display: inline-block;
+    padding-left: 15px;
   }
 
   .cart-empty {
@@ -383,40 +387,10 @@
     padding: 6px 20px;
   }
 
-
 </style>
 <style>
   .mui-bar.mui-table ~ .mui-content {
     padding-bottom: 50px;
   }
 
-  .mui-popup {
-    border-radius: 5px;
-  }
-
-  .mui-popup-inner {
-    border-radius: 5px 5px 0 0;
-    padding: 30px 15px;
-  }
-
-  .mui-popup-button:first-child {
-    border-radius: 0 0 0 5px;
-    color: #fff;
-    background: #f90101;
-  }
-
-  .mui-popup-button:last-child {
-    border-radius: 0 0 5px 0;
-    color: #333;
-  }
-
-  .mui-popup-button.mui-popup-button-bold {
-    font-weight: 400;
-  }
-
-  .mui-popup-title {
-    font-weight: 400;
-    font-size: 16px;
-    color: #333;
-  }
 </style>
