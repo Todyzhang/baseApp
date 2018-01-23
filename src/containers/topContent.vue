@@ -68,4 +68,7 @@ e.g.
   .mui-table-view>li.mui-table-view-cell{
     display: block;
   }
+  .mui-bar.mui-table ~ .mui-content{
+    padding-bottom:50px;
+  }
 </style>

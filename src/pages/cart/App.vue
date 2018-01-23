@@ -14,9 +14,10 @@
                  @tb-active="goodsEditBtn"
                  :ib-btn="{name:'去结算('+selected+')',disabled:isSelectedEmpty}"
                  :ib-info-class="{'mui-text-right':total===0}"
-                 @ib-active=""
+                 @ib-active="settleBtn"
                  slot="page-footer">
-        <span class="goods-total">合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>
+        <span class="goods-total">合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label"
+                                                                                        v-show="total>0">不含邮费</span>
       </component>
       <ul class="mui-table-view">
         <li class="mui-table-view-cell" v-for="(li,index) in cartList" :key="index" :class="{'disabled':li.state>0}">
@@ -44,11 +45,11 @@
 <script>
 
   import TopContent from "../../containers/topContent";
-  import SelecterIcon from "../../components/selecterIcon";
-  import GoodsCell from "../../components/goodsCell";
+  import SelecterIcon from "../../components/SelecterIcon";
+  import GoodsCell from "../../components/GoodsCell";
   import {keep2Decimal, miliFormat} from "../../utils/filter";
-  import TwoBtns from "../../components/twoBtns";
-  import InfoBtn from "../../components/infoBtn";
+  import TwoBtns from "../../components/TwoBtns";
+  import InfoBtn from "../../components/InfoBtn";
 
   export default {
     components: {
@@ -170,10 +171,10 @@
         return this.gList.length;
       },
       isEmpty() {
-        return this.gListLen===0;
+        return this.gListLen === 0;
       },
       isNotEmpty() {
-        return this.gListLen>0;
+        return this.gListLen > 0;
       },
       selected() {
         //选中个数
@@ -225,39 +226,57 @@
           v.selected = !1;
         });
       },
-      editCallback(list){
+      editCallback(list) {
         this.gList = list;
         //更新滚动条位置
         setTimeout(() => {
           this.getScroller.refresh();
         }, 0);
       },
-
-      goodsEditBtn(type) {
-        let len = this.goodsValidLen, list = [...this.gList], i = len - 1, ids = [], li;
-
-        if (this.selected === 0) {
-          return;
-        }
+      getSelectedGoods(){
+        let len = this.gListLen, ntList = [...this.gList], i = len - 1, ids = [], list=[],li;
         for (; i >= 0; i--) {
-          li = list[i];
+          li = ntList[i];
           if (li.selected) {
-            list.splice(i, 1);
+            ntList.splice(i, 1);
+            list.push(li);
             ids.push(li.id);
           }
         }
-        if(type===1){
+        return {
+          ntList:ntList,//未选中的商品列表
+          list:list,//选中的商品列表
+          ids:ids //选中的商品列表ID
+        }
+      },
+      goodsEditBtn(type) {
+        let goodsList=[];
+        if (this.selected === 0) {
+          return;
+        }
+        goodsList=this.getSelectedGoods();
+
+        if (type === 1) {
           mui.confirm("", "是否确定要删除这些商品?", ["确定", "取消"], (e) => {
-            if(e.index===0) {
-              this.editCallback(list);
+            if (e.index === 0) {
+              this.editCallback(goodsList.list);
             }
           }, "div");
-        }else{
-          this.editCallback(list);
+        } else {
+          this.editCallback(goodsList.list);
         }
 
         //todo 移到收藏夹及删除ajax操作
         console.log(type, ids);
+      },
+      settleBtn() {
+        if (!this.isSelectedEmpty) {
+          mui.openWindow({
+            url:"settle.html",
+            id:"settle",
+            extras:{data:this.getSelectedGoods().list}
+          });
+        }
       }
     },
     mounted() {
@@ -325,10 +344,9 @@
     color: #e1e1e1;
   }
 
-
-  .goods-state{
-    text-align:left;
-    border-bottom:1px solid #e1e1e1;
+  .goods-state {
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
     margin: 0 -3% 10px -3%;
     padding: 0 0 10px 3%;
   }
@@ -388,9 +406,4 @@
   }
 
 </style>
-<style>
-  .mui-bar.mui-table ~ .mui-content {
-    padding-bottom: 50px;
-  }
 
-</style>

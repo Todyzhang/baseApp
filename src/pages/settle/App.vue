@@ -1,11 +1,12 @@
 <template>
   <top-content :scroll-style="{background:'#f2f2f2'}">
+    <nav-bar slot="page-header" nb-title="神农集市" :nb-left="nbLeft"/>
     <info-btn class="mui-bar"
-               :ib-btn="{name:'提交订单'}"
-               :ib-info-class="{'mui-text-right':total===0}"
-               @ib-active=""
-               slot="page-footer">
-      <span class="goods-total">合计：</span>￥{{total | keep2Decimal | miliFormat}}<span class="mui-tab-label" v-show="total>0">不含邮费</span>
+              :ib-btn="{name:'提交订单'}"
+              :ib-info-class="{'mui-text-right':goodsLen===0}"
+              @ib-active=""
+              slot="page-footer">
+      <span class="goods-info">共 {{goodsLen}} 件，实付款：</span><span class="goods-total">￥{{total | keep2Decimal | miliFormat}}</span>
     </info-btn>
     <div class="mui-table-view">
       <div class="mui-table-view-cell">
@@ -17,75 +18,173 @@
     </div>
     <ul class="mui-table-view mt-15">
       <li class="mui-table-view-cell" v-for="(li,index) in gList" :key="index">
-        <goods-cell :goodsData="li" :need1stCell="false" />
+        <goods-cell :goodsData="li" :need1stCell="false"/>
       </li>
     </ul>
+    <div class="mui-table-view mt-15">
+      <div class="mui-table-view-cell">
+        <p class="pay-type">支付方式</p>
+      </div>
+    </div>
+    <div class="mui-table-view mt-15">
+      <div class="mui-table-view-cell">
+        <div class="mui-input-row">
+          <label>留言备注</label>
+          <input type="text" class="mui-input-clear" placeholder="选填（50字以内）">
+        </div>
+      </div>
+
+    </div>
+    <ul class="mui-table-view mt-15">
+      <li class="mui-table-view-cell">
+        <p class="mui-text-left goods-price">
+          商品总额<span>￥{{goodsTotal | keep2Decimal}}</span>
+        </p>
+      </li>
+      <li class="mui-table-view-cell">
+        <p class="mui-text-left goods-price">
+          运费<span>￥{{freight | keep2Decimal}}</span>
+        </p>
+      </li>
+    </ul>
+
 
   </top-content>
 </template>
 
 <script>
 
-  import NavTab from "../../components/NavTab";
-  import Slider from "../../components/Slider";
   import TopContent from "../../containers/topContent";
-  import Searcher from "../../components/Seacher";
+  import GoodsCell from "../../components/GoodsCell";
+  import InfoBtn from "../../components/InfoBtn";
   import NavBar from "../../components/NavBar";
-  import GoodsCell from "../../components/goodsCell";
-  import InfoBtn from "../../components/infoBtn";
+  import {keep2Decimal, miliFormat} from "../../utils/filter";
 
   export default {
     components: {
       InfoBtn,
       GoodsCell,
       NavBar,
-      Searcher,
-      TopContent,
-      NavTab,
-      Slider},
+      TopContent
+    },
     name: "app",
-    data(){
+    data() {
       return {
-        total:100,
-        gList:[
-          {
-            id: 1,
-            img: require("../index/imgs/sy-icon-1.png"),
-            info: "英得新鲜无花果3斤装 英得新鲜无花果3斤装 英得新鲜无花果3斤装",
-            spec: "3斤装",
-            price: "48000.01",
-            buyNum: 10,
-            state: 0  //0-正常；1-下架；2-售罄
-          },
-          {
-            id: 8,
-            img: require("../index/imgs/sy-icon-6.png"),
-            info: "攀枝花凯特超级大芒果2kg/2-4个青芒果 大芒果2kg/2-4个青芒果",
-            spec: "2kg",
-            price: 48.99,
-            buyNum: 1,
-            state: 0,
-            oldPrice: 53.99
+        gList: [],
+        nbLeft:{
+          icon:'mui-icon-left-nav',
+          text:'返回',
+          clickFn(){
+            mui.back();
           }
-        ]
+        },
+        freight: 0
       }
     },
-    mounted(){
+    computed: {
+      goodsTotal() {
+        let total = 0;
+        mui.each(this.gList, (i, v) => {
+          if (v.state === 0) {
+            total += v.price * v.buyNum;
+          }
+        });
+        return total;
+      },
+      total(){
+        return this.goodsTotal+this.freight;
+      },
+      goodsLen(){
+        return this.gList.length;
+      }
+    },
+    mounted() {
       mui.init();
+      mui.plusReady(()=>{
+        this.gList=plus.webview.currentWebview().data;
+      });
     }
   }
 </script>
 
 <style scoped>
-  .mui-navigate-right:after{
-    font-size:30px;
-    color:#999;
-    right:6px;
-  }
-  .mui-navigate-right > .title > span{
+  .goods-info{
     color:#333;
-    font-size:18px;
+  }
+  .goods-total{
+    color:#f90101;
+    font-size:20px;
+    display: inline-block;
+  }
+  .mui-navigate-right:after {
+    font-size: 30px;
+    color: #999;
+    right: 6px;
+  }
+
+  .mui-navigate-right > .title > span {
+    color: #333;
+    font-size: 18px;
+  }
+
+  .pay-type,
+  .goods-price {
+    color: #333;
+    overflow: hidden;
+    text-align: left;
+    font-size: 16px;
+    position: relative;
+    line-height: 2;
+  }
+
+  .pay-type:after {
+    content: "";
+    background: url("../../assets/wxpay.png") no-repeat center;
+    background-size: contain;
+    height: 2em;
+    width: 7em;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+  }
+
+  .mui-input-row label {
+    float: initial;
+    width: 5em;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    padding: 6px 0;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1;
+    color: #333;
+  }
+
+  .mui-input-row label ~ input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 1.5em 6px 5em;
+    height: auto;
+    line-height: 1;
+  }
+
+  .goods-price>span {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    color: #f90101;
   }
 
 
+
+</style>
+<style>
+  .mui-input-row .mui-input-clear ~ .mui-icon-clear {
+    top: 6px;
+  }
 </style>

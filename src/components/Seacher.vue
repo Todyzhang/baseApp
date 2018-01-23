@@ -42,7 +42,7 @@
   }
 
   .sn-search .search-inner-wrap > .mui-icon {
-    left: 30px;
+    margin-left: 30px;
   }
 
   .search-inner-wrap > input {

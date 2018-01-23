@@ -43,7 +43,7 @@ e.g.
 </template>
 
 <script>
-  import SelecterIcon from "./selecterIcon";
+  import SelecterIcon from "./SelecterIcon";
   import NumberBox from "./numberBox";
   import {twoDecimal} from "../utils/filter";
 

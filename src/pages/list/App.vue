@@ -1,14 +1,15 @@
 <template>
-  <top-content :scroll-style="{top:'106px'}" :is-init-scroll="0">
-    <div slot="page-header">
+  <top-content :scroll-style="{top:'64px'}" :is-init-scroll="0">
+    <header slot="page-header" class="mui-bar mui-bar-nav">
       <searcher style="background:#fff;"/>
-      <nav class="sn-tab-bar mui-bar mui-bar-tab" :class="isTabShow">
+      <nav class="sn-tab-bar " :class="isTabShow">
         <a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"
            @tap="tabItemClick(index,tab)">
           <span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>
         </a>
       </nav>
-    </div>
+    </header>
+
     <goods-list :g-list="gList" :g-bgc="'#efefef'"/>
   </top-content>
 </template>
@@ -185,10 +186,10 @@
 </script>
 
 <style scoped>
-  .mui-bar.mui-bar-tab{
-    top:0;
-    bottom:auto;
-    position:fixed;
+  .mui-bar.mui-bar-nav{
+    height:106px;
+    margin: 0 -10px;
+    box-shadow:0 0 1px rgba(0,0,0,.35);
   }
   .sn-tab-bar {
     background: #fff;

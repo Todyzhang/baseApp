@@ -37,21 +37,12 @@
 
 <script>
 
-  import NavTab from "../../components/NavTab";
-  import Slider from "../../components/Slider";
   import TopContent from "../../containers/topContent";
-  import Searcher from "../../components/Seacher";
-  import NavBar from "../../components/NavBar";
-  import GoodsList from "../../components/GoodsList";
 
   export default {
     components: {
-      GoodsList,
-      NavBar,
-      Searcher,
-      TopContent,
-      NavTab,
-      Slider},
+      TopContent
+    },
     name: "app",
     data(){
       return {
