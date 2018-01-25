@@ -33,7 +33,6 @@
           <input type="text" class="mui-input-clear" placeholder="选填（50字以内）">
         </div>
       </div>
-
     </div>
     <ul class="mui-table-view mt-15">
       <li class="mui-table-view-cell">
@@ -71,10 +70,10 @@
     data() {
       return {
         gList: [],
-        nbLeft:{
-          icon:'mui-icon-left-nav',
-          text:'返回',
-          clickFn(){
+        nbLeft: {
+          icon: 'mui-icon-left-nav',
+          text: '返回',
+          clickFn() {
             mui.back();
           }
         },
@@ -91,37 +90,42 @@
         });
         return total;
       },
-      total(){
-        return this.goodsTotal+this.freight;
+      total() {
+        return this.goodsTotal + this.freight;
       },
-      goodsLen(){
+      goodsLen() {
         return this.gList.length;
       }
     },
     mounted() {
       mui.init();
-      mui.plusReady(()=>{
-        this.gList=plus.webview.currentWebview().data;
+      mui.plusReady(() => {
+        this.gList = plus.webview.currentWebview().data;
       });
     }
   }
 </script>
 
 <style scoped>
-  .goods-info{
-    color:#333;
+  .goods-info {
+    color: #333;
   }
-  .goods-total{
-    color:#f90101;
-    font-size:20px;
+
+  .goods-total {
+    color: #f90101;
+    font-size: 20px;
     display: inline-block;
   }
+
   .mui-navigate-right:after {
     font-size: 30px;
     color: #999;
     right: 6px;
   }
 
+  .mui-navigate-right > p{
+    line-height: 2;
+  }
   .mui-navigate-right > .title > span {
     color: #333;
     font-size: 18px;
@@ -171,7 +175,7 @@
     line-height: 1;
   }
 
-  .goods-price>span {
+  .goods-price > span {
     display: inline-block;
     position: absolute;
     top: 50%;
@@ -179,7 +183,6 @@
     right: 0;
     color: #f90101;
   }
-
 
 
 </style>

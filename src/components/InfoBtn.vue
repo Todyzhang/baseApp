@@ -49,9 +49,7 @@
     color: #000;
     font-size: 16px;
     vertical-align: middle;
+    padding: 0 10px;
   }
 
-  .info.mui-text-right {
-    padding-right: 15px;
-  }
 </style>
