@@ -1,8 +1,8 @@
 <template>
-  <top-content :scroll-style="{top:'64px'}" :is-init-scroll="0">
+  <top-content :scroll-style="{top:scrollTop+'px'}" :is-init-scroll="0">
     <header slot="page-header" class="mui-bar mui-bar-nav">
-      <searcher style="background:#fff;"/>
-      <nav class="sn-tab-bar " :class="isTabShow">
+      <searcher class="sn-search" :class="{'mui-hidden':scrollTop===0}"/>
+      <nav class="sn-tab-bar">
         <a v-for="(tab,index) in typeItems" :key="index" :class="{active:index===tabActive}"
            @tap="tabItemClick(index,tab)">
           <span :class="{'icon':tab.icon,'up':tab.up}">{{tab.text}}</span>
@@ -42,7 +42,7 @@
         tabActive: 0,
         lastTab: 3,
         pullRefresher: null,
-        isTabShow:"",
+        scrollTop: 82,
         gList: [
           {
             id: 1,
@@ -152,12 +152,12 @@
         this.getPullRefresher().endPullupToRefresh(true);
       },
       handleScroll(e) {
-        var y = window.scrollY;
-        if (mui.os.plus && e && e.detail) {
-          y = -e.detail.y;
+        let y = -e.detail.y;
+        if(y > 64&&this.scrollTop !== 0){
+          this.scrollTop = 0;
+        }else if(y<=64&&this.scrollTop !== 82){
+          this.scrollTop = 82;
         }
-        console.log(y);
-        this.isTabShow=y>60?"mui-bar mui-bar-tab":"";
       }
     },
     mounted() {
@@ -166,7 +166,7 @@
         pullRefresh: {
           container: '.mui-scroll-wrapper',
           down: {
-            style: 'circle',
+            // style: 'circle',//有此项的话，顶部部件并没有固定在页头
             callback: this.pulldownRefresh
           },
           up: {
@@ -175,34 +175,34 @@
           }
         }
       });
-
-      // if (mui.os.plus) {
-      //   window.addEventListener('touchmove', this.handleScroll);
-      // }
-      // window.addEventListener("scroll", this.handleScroll);
+      window.addEventListener("scroll", this.handleScroll);
 
     }
   }
 </script>
 
 <style scoped>
-  .mui-bar.mui-bar-nav{
-    height:106px;
+  .mui-bar.mui-bar-nav {
     margin: 0 -10px;
-    box-shadow:0 0 1px rgba(0,0,0,.35);
+    box-shadow: 0 0 1px rgba(0, 0, 0, .35);
   }
+
+  .sn-search,
   .sn-tab-bar {
     background: #fff;
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  .sn-tab-bar {
     display: table;
     width: 100%;
-    border-top: 1px solid #e1e1e1;
   }
 
   .sn-tab-bar > a {
     display: table-cell;
     color: #333;
     padding: 12px;
-    width:25%;
+    width: 25%;
   }
 
   .sn-tab-bar > a.active {
