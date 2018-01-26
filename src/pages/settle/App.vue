@@ -8,11 +8,12 @@
               slot="page-footer">
       <span class="goods-info">共 {{goodsLen}} 件，实付款：</span><span class="goods-total">￥{{total | keep2Decimal | miliFormat}}</span>
     </info-btn>
-    <div class="mui-table-view">
+    <div class="mui-table-view mt-15">
       <div class="mui-table-view-cell">
         <a class="mui-navigate-right mui-text-left">
-          <p class="title"><span>王先生</span> 18032115432</p>
-          <p class="info">北京市朝阳区紫檀大厦A座6层</p>
+          <!--<p class="title"><span>王先生</span> 18032115432</p>-->
+          <!--<p class="info">北京市朝阳区紫檀大厦A座6层</p>-->
+          <p class="add-address">新增配送地址</p>
         </a>
       </div>
     </div>
@@ -36,7 +37,7 @@
     </div>
     <ul class="mui-table-view mt-15">
       <li class="mui-table-view-cell">
-        <p class="mui-text-left goods-price">
+        <p class="mui-navigate-right mui-text-left goods-price">
           商品总额<span>￥{{goodsTotal | keep2Decimal}}</span>
         </p>
       </li>
@@ -183,7 +184,13 @@
     right: 0;
     color: #f90101;
   }
-
+  .add-address{
+    background: url("./imgs/add_address.png") no-repeat left center;
+    background-size: 2em;
+    padding-left: 2.5em;
+    font-size: 16px;
+    color: #333;
+  }
 
 </style>
 <style>
