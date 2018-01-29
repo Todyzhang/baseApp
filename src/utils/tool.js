@@ -40,3 +40,7 @@ export function has3thClient(id) {
     }
   }
 }
+
+export function keep2Decimal(value) {
+  return isNaN(parseFloat(value)) ? "" : (+value).toFixed(2);
+}

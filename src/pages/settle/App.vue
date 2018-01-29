@@ -8,45 +8,17 @@
               slot="page-footer">
       <span class="goods-info">共 {{goodsLen}} 件，实付款：</span><span class="goods-total">￥{{total | keep2Decimal | miliFormat}}</span>
     </info-btn>
-    <div class="mui-table-view mt-15">
-      <div class="mui-table-view-cell">
-        <a class="mui-navigate-right mui-text-left">
-          <!--<p class="title"><span>王先生</span> 18032115432</p>-->
-          <!--<p class="info">北京市朝阳区紫檀大厦A座6层</p>-->
-          <p class="add-address">新增配送地址</p>
-        </a>
-      </div>
-    </div>
+    <cell-list class="mt-15" :cl-list="[{title:'新增配送地址',icon:'add-address',arrow:true}]"/>
+    <cell-list class="mt-15" :cl-list="[{title:'<span>王先生</span> 18032115432',titleClass:'address',
+    info:'北京市朝阳区紫檀大厦A座6层',infoClass:'',arrow:true,type:'twoRow'}]"/>
     <ul class="mui-table-view mt-15">
       <li class="mui-table-view-cell" v-for="(li,index) in gList" :key="index">
         <goods-cell :goodsData="li" :need1stCell="false"/>
       </li>
     </ul>
-    <div class="mui-table-view mt-15">
-      <div class="mui-table-view-cell">
-        <p class="pay-type">支付方式</p>
-      </div>
-    </div>
-    <div class="mui-table-view mt-15">
-      <div class="mui-table-view-cell">
-        <div class="mui-input-row">
-          <label>留言备注</label>
-          <input type="text" class="mui-input-clear" placeholder="选填（50字以内）">
-        </div>
-      </div>
-    </div>
-    <ul class="mui-table-view mt-15">
-      <li class="mui-table-view-cell">
-        <p class="mui-navigate-right mui-text-left goods-price">
-          商品总额<span>￥{{goodsTotal | keep2Decimal}}</span>
-        </p>
-      </li>
-      <li class="mui-table-view-cell">
-        <p class="mui-text-left goods-price">
-          运费<span>￥{{freight | keep2Decimal}}</span>
-        </p>
-      </li>
-    </ul>
+    <cell-list class="mt-15" :cl-list="[{title:'支付方式',infoClass:'pay-type'}]"/>
+    <input-cell class="mt-15" :ic-list="[{label:'留言备注',placeholder:'选填（50字以内）'}]" />
+    <cell-list class="mt-15" :cl-list="clList"/>
 
 
   </top-content>
@@ -58,10 +30,14 @@
   import GoodsCell from "../../components/GoodsCell";
   import InfoBtn from "../../components/InfoBtn";
   import NavBar from "../../components/NavBar";
-  import {keep2Decimal, miliFormat} from "../../utils/filter";
+  import {keep2Decimal} from "../../utils/tool";
+  import CellList from "../../components/CellList";
+  import InputCell from "../../components/InputCell";
 
   export default {
     components: {
+      InputCell,
+      CellList,
       InfoBtn,
       GoodsCell,
       NavBar,
@@ -96,6 +72,20 @@
       },
       goodsLen() {
         return this.gList.length;
+      },
+      clList() {
+        return [
+          {
+            title: "商品总额",
+            info: "￥" + keep2Decimal(this.goodsTotal),
+            infoClass: "default-color"
+          },
+          {
+            title: "运费",
+            info: "￥" + keep2Decimal(this.freight),
+            infoClass: "default-color"
+          }
+        ]
       }
     },
     mounted() {
@@ -118,32 +108,32 @@
     display: inline-block;
   }
 
-  .mui-navigate-right:after {
-    font-size: 30px;
-    color: #999;
-    right: 6px;
+
+
+</style>
+<style>
+  .mui-input-row .mui-input-clear ~ .mui-icon-clear {
+    top: 6px;
   }
 
-  .mui-navigate-right > p{
-    line-height: 2;
+  .add-address {
+    background: url("./imgs/add_address.png") no-repeat left center;
+    background-size: 1.75em;
+    padding-left: 2.5em;
+    font-size: 16px;
+    color: #333;
   }
-  .mui-navigate-right > .title > span {
+
+  .address {
+    color: #666;
+  }
+
+  .address > span {
     color: #333;
     font-size: 18px;
   }
 
-  .pay-type,
-  .goods-price {
-    color: #333;
-    overflow: hidden;
-    text-align: left;
-    font-size: 16px;
-    position: relative;
-    line-height: 2;
-  }
-
-  .pay-type:after {
-    content: "";
+  .pay-type {
     background: url("../../assets/wxpay.png") no-repeat center;
     background-size: contain;
     height: 2em;
@@ -155,46 +145,7 @@
     right: 0;
   }
 
-  .mui-input-row label {
-    float: initial;
-    width: 5em;
-    position: absolute;
-    left: 0;
-    top: 2px;
-    padding: 6px 0;
-    text-align: left;
-    font-size: 16px;
-    line-height: 1;
-    color: #333;
-  }
-
-  .mui-input-row label ~ input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 6px 1.5em 6px 5em;
-    height: auto;
-    line-height: 1;
-  }
-
-  .goods-price > span {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0;
+  .default-color {
     color: #f90101;
-  }
-  .add-address{
-    background: url("./imgs/add_address.png") no-repeat left center;
-    background-size: 2em;
-    padding-left: 2.5em;
-    font-size: 16px;
-    color: #333;
-  }
-
-</style>
-<style>
-  .mui-input-row .mui-input-clear ~ .mui-icon-clear {
-    top: 6px;
   }
 </style>

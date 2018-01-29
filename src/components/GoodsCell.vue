@@ -33,10 +33,7 @@ e.g.
     <div class="mui-table-cell mui-text-left goods-info" :class="need1stCell?'mui-col-xs-8':'mui-col-xs-9'">
       <h4 class="mui-ellipsis-2">{{goodsData.info}}</h4>
       <p class="goods-spec">规格：{{goodsData.spec}}</p>
-      <p class="goods-price-wrap" v-if="!isEdit">￥<span class="goods-price">{{parseInt(goodsData.price)}}</span>
-        .{{goodsData.price | twoDecimal}}<span class="goods-price-del"
-                                               v-if="goodsData.oldPrice">￥{{goodsData.oldPrice}}</span><span
-          v-show="goodsData.state===0" class="mui-pull-right">×{{goodsData.buyNum}}</span></p>
+      <p class="goods-price-wrap" v-if="!isEdit">￥<span class="goods-price">{{parseInt(goodsData.price)}}</span>.{{goodsData.price | twoDecimal}}<span class="goods-price-del" v-if="goodsData.oldPrice">￥{{goodsData.oldPrice}}</span><span v-show="goodsData.state===0" class="mui-pull-right">×{{goodsData.buyNum}}</span></p>
       <number-box v-if="isEdit && goodsData.state===0" class="mui-pull-right" v-model="goodsData.buyNum"/>
     </div>
   </div>
