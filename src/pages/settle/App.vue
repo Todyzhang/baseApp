@@ -17,7 +17,7 @@
       </li>
     </ul>
     <cell-list class="mt-15" :cl-list="[{title:'支付方式',infoClass:'pay-type'}]"/>
-    <input-cell class="mt-15" :ic-list="[{label:'留言备注',placeholder:'选填（50字以内）'}]" />
+    <input-cell class="mt-15" :ic-list="icList"/>
     <cell-list class="mt-15" :cl-list="clList"/>
 
 
@@ -54,7 +54,8 @@
             mui.back();
           }
         },
-        freight: 0
+        freight: 0,
+        remark: ""
       }
     },
     computed: {
@@ -86,6 +87,9 @@
             infoClass: "default-color"
           }
         ]
+      },
+      icList() {
+        return [{label: '留言备注', placeholder: '选填（50字以内）', model: this.remark, limit: 50}]
       }
     },
     mounted() {
@@ -107,7 +111,6 @@
     font-size: 20px;
     display: inline-block;
   }
-
 
 
 </style>

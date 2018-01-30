@@ -5,7 +5,7 @@
     <form class="login-form">
       <div class="mui-input-row">
         <span class="mui-icon mui-icon-person"></span>
-        <input type="text" class="mui-input-clear" placeholder="手机号/用户名" data-model="iAccout"
+        <input type="text" class="mui-input-clear" placeholder="手机号/用户名"
                v-model="iAccout">
       </div>
       <div class="mui-input-row mui-password">
@@ -129,9 +129,12 @@
       mui(".mui-scroll-wrapper").scroll();
       //点击清除输入框时需同时置空vue model
       mui(".mui-input-row").on("tap", ".mui-icon-clear", (e) => {
-        let _model = e.target.previousSibling.getAttribute("data-model");
-        this[_model] = "";
+        let input = e.target.previousSibling;
+        mui.trigger(input,"input");
       });
+    },
+    beforeDestroy(){
+      mui(".mui-input-row").off("tap");
     }
   }
 </script>

@@ -1,15 +1,21 @@
+<!--
+注：针对input开发的自定义指令，如果不是绑定在当前作用域的Model,其指令update函数不会触发
+-->
 <template>
   <div class="mui-table-view mt-15">
     <div class="mui-table-view-cell" v-for="(li,index) in icList" :key="index">
       <div class="mui-input-row">
         <label>{{li.label}}</label>
-        <input type="text" class="mui-input-clear" :placeholder="li.placeholder">
+        <input type="text" class="mui-input-clear" v-enter-length="li.limit" :placeholder="li.placeholder"
+               v-model="vModel[index]" @input="updateValue(vModel[index],li)">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import {enterLength} from "../utils/directives"
+
   export default {
     name: "input-cell",
     props: {
@@ -17,6 +23,33 @@
         type:Array,
         require:true
       }
+    },
+    data(){
+      return {
+        vModel:{}
+      }
+    },
+    create(){
+      //动态生成model
+      this.icList.forEach((i)=>{
+        this.vModel[i]="";
+      })
+    },
+    methods: {
+      updateValue(value,target) {
+        // 通过 input 事件更新父组件的信息
+        target.model=value;
+      }
+    },
+    mounted(){
+      //点击清除输入框时需同时置空vue model
+      mui(".mui-input-row").on("tap", ".mui-icon-clear", (e) => {
+        let input = e.target.previousSibling;
+        input.dispatchEvent(new Event("input"));
+      });
+    },
+    beforeDestroy(){
+      mui(".mui-input-row").off("tap");
     }
   }
 </script>
