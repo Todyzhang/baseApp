@@ -1,5 +1,20 @@
 <!--
+input cell组件
+样式：
+------------------------
+label input
+------------------------
+
+@attr icList Array   cell参数，包含以下字段：label-标题、limit-文本限制输入位数、placeholder-文本框提示语、model-用户输入后保存在该值
+
+e.g.
+html:
+<input-cell :ic-list="icList"/>
+js:
+data:icList [{label: '留言备注', placeholder: '选填（50字以内）', model: this.remark, limit: 50}]
+
 注：针对input开发的自定义指令，如果不是绑定在当前作用域的Model,其指令update函数不会触发
+
 -->
 <template>
   <div class="mui-table-view mt-15">
@@ -74,5 +89,10 @@
     padding: 6px 1.5em 6px 5em;
     height: auto;
     line-height: 1;
+  }
+</style>
+<style>
+  .mui-input-row .mui-input-clear ~ .mui-icon-clear {
+    top: 6px;
   }
 </style>

@@ -1,5 +1,5 @@
 <!--
-  组件cell有以下样式，默认1
+  组件cell有以下样式，默认oneRow
   -------------------------------
   type         left        right
    oneRow    icon+title   info+>
@@ -7,14 +7,17 @@
              info
   -------------------------------
 
-  @prop cl-list  cell参数，包含以下字段：
-                 type-种类（单行；上下行）、title-左侧标题、titleClass-标题样式、info-右侧或低部说明、infoClass-说明样式、
-                 icon-左侧图标、arrow-右侧箭头
+  @attr cl-list  Array   cell参数，包含以下字段：
+                           type-种类（单行；上下行）、title-左侧标题、titleClass-标题样式、info-右侧或低部说明、infoClass-说明样式、
+                           icon-左侧图标、arrow-右侧箭头
 
   e.g.
+  html:
   <cell-list class="mt-15" :cl-list="[{title:'新增配送地址',icon:'add-address',arrow:true}]" />
 
   <cell-list class="mt-15" :cl-list="clList" />
+
+  js:
   clList:[
           {
             title:"商品总额",

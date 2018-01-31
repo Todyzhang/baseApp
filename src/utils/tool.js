@@ -40,7 +40,9 @@ export function has3thClient(id) {
     }
   }
 }
-
+/**
+ * 保留2位小数
+ */
 export function keep2Decimal(value) {
   return isNaN(parseFloat(value)) ? "" : (+value).toFixed(2);
 }

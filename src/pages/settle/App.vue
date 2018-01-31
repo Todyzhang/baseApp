@@ -115,10 +115,6 @@
 
 </style>
 <style>
-  .mui-input-row .mui-input-clear ~ .mui-icon-clear {
-    top: 6px;
-  }
-
   .add-address {
     background: url("./imgs/add_address.png") no-repeat left center;
     background-size: 1.75em;

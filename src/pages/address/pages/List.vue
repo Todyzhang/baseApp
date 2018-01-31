@@ -1,5 +1,4 @@
 <template>
-
     <div class="sub-page">
       <div class="title">
         这是subNView模式选项卡中的第1个子页面，该页面展示一个支持单webview模式的下拉刷新、上拉加载的消息列表
