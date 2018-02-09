@@ -1,20 +1,20 @@
 import Vue from "vue"
 import Router from "vue-router"
-import List from "./pages/List"
-import New from "./pages/New"
-
+import List from "./views/List"
+import Add from "./views/Add"
 
 Vue.use(Router);
 export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/new"
+      name: "index",
+      component: List
     },
     {
-      path: "/new",
-      name: "new",
-      component: New,
+      path: "/add",
+      name: "add",
+      component: Add
 
     }
   ]

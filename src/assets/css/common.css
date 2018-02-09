@@ -44,4 +44,9 @@
 .mui-btn-default{
   background: #f90101;
   color: #fff;
+  border:0;
+}
+.mui-btn-default:active{
+  background: #e00000;
+  color:#fff;
 }

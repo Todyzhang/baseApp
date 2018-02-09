@@ -7,8 +7,8 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let resolve = function (dir) {
   return path.join(__dirname, '..', dir);
 };
-let entries = utils.getEntries(resolve("src") + '/pages/**/*.js');
-let pages = utils.getEntries(resolve("src") + '/pages/**/*.html', 1);
+let entries = utils.getEntries(resolve("src") + '/pages/**/main.js');
+let pages = utils.getEntries(resolve("src") + '/pages/**/index.html', 1);
 
 module.exports = {
   entry: entries,

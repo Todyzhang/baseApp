@@ -8,9 +8,9 @@
               slot="page-footer">
       <span class="goods-info">共 {{goodsLen}} 件，实付款：</span><span class="goods-total">￥{{total | keep2Decimal | miliFormat}}</span>
     </info-btn>
-    <cell-list class="mt-15" :cl-list="[{title:'新增配送地址',icon:'add-address',arrow:true}]"/>
+    <cell-list class="mt-15" :cl-list="[{title:'新增配送地址',icon:'add-address',arrow:true}]" @click.native="linkTo('./address.html#/add')"/>
     <cell-list class="mt-15" :cl-list="[{title:'<span>王先生</span> 18032115432',titleClass:'address',
-    info:'北京市朝阳区紫檀大厦A座6层',infoClass:'',arrow:true,type:'twoRow'}]"/>
+    info:'北京市朝阳区紫檀大厦A座6层',infoClass:'',arrow:true,type:'twoRow'}]" @click.native="linkTo('./address.html')"/>
     <ul class="mui-table-view mt-15">
       <li class="mui-table-view-cell" v-for="(li,index) in gList" :key="index">
         <goods-cell :goodsData="li" :need1stCell="false"/>
@@ -90,6 +90,15 @@
       },
       icList() {
         return [{label: '留言备注', placeholder: '选填（50字以内）', model: this.remark, limit: 50}]
+      }
+    },
+    methods:{
+      linkTo(url){
+        // location.href=url;
+        mui.openWindow({
+          url:url,
+          id:url
+        });
       }
     },
     mounted() {

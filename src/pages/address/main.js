@@ -4,11 +4,14 @@ import Vue from "vue"
 import App from "./App"
 import router from "./routes"
 Vue.config.productionTip = false;
+router.beforeEach((to, from, next) => {
+  next();
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
   router,
-  template: "<App/>",
+  template: "<App />",
   components: { App }
 });

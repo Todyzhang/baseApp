@@ -17,7 +17,7 @@ data:icList [{label: '留言备注', placeholder: '选填（50字以内）', mod
 
 -->
 <template>
-  <div class="mui-table-view mt-15">
+  <div class="mui-table-view">
     <div class="mui-table-view-cell" v-for="(li,index) in icList" :key="index">
       <div class="mui-input-row">
         <label>{{li.label}}</label>
