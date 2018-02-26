@@ -13,7 +13,9 @@
         <input type="password" class="mui-input-password" placeholder="密码"
                v-model="iPwd">
       </div>
-      <button type="button" id="comfirmBtn" class="mui-btn mui-btn-block mui-btn-primary" @tap="comfirm">确认</button>
+      <button type="button" id="comfirmBtn" class="mui-btn mui-btn-block mui-btn-primary" @tap="comfirm"
+              data-loading-text="登录中...">确认
+      </button>
       <div class="link-area">
         <a id='reg'>注册账号</a> <span class="spliter">|</span> <a id='forgetPassword'>忘记密码</a>
       </div>
@@ -74,17 +76,18 @@
         btn.button('loading');
         fetch.Login(params)
           .then(res => {
-            mui.openWindow({
-              url: 'login.html',
-              id: 'login',
-              show: {
-                aniShow: 'pop-in'
-              }
-            });
+            // mui.openWindow({
+            //   url: 'login.html',
+            //   id: 'login',
+            //   show: {
+            //     aniShow: 'pop-in'
+            //   }
+            // });
+            console.log(res)
           }, err => {
             console.log(err);
           })
-          .finally(() => btn.button('reset'))
+        //.finally(() => btn.button('reset'))
       },
       thirdOauth(type) {
         let auth = this.oauth[type].auth;
@@ -130,14 +133,22 @@
       //点击清除输入框时需同时置空vue model
       mui(".mui-input-row").on("tap", ".mui-icon-clear", (e) => {
         let input = e.target.previousSibling;
-        mui.trigger(input,"input");
+        mui.trigger(input, "input");
       });
     },
-    beforeDestroy(){
+    beforeDestroy() {
       mui(".mui-input-row").off("tap");
     }
   }
 </script>
+<style>
+  .mui-pager .mui-disabled > span {
+    opacity: 1;
+    color: #fff;
+    border: none;
+    background:none;
+  }
+</style>
 <style scoped>
   .logo {
     display: block;

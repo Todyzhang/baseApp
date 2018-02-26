@@ -33,8 +33,8 @@
         //   url:url,
         //   id:url
         // });
-        location.href=url;
-        console.log("new")
+        this.$router.push('add');
+        console.log("new",url)
       }
     },
     mounted() {

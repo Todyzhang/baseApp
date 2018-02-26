@@ -46,3 +46,17 @@ export function has3thClient(id) {
 export function keep2Decimal(value) {
   return isNaN(parseFloat(value)) ? "" : (+value).toFixed(2);
 }
+
+/**
+ * 解析“key=value&key1=value2”字符串为obj:{key:value,key1:value2}
+ * @param str
+ * @returns {{}}
+ */
+export function parseUrlParam(str) {
+  let obj={},ary=str.split("&"),item="";
+  for(let i=0,len=ary.length;i<len;i++){
+    item=ary[i].split("=");
+    obj[item[0]]=item[1]||"";
+  }
+  return obj;
+}
