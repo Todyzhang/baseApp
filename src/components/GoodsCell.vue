@@ -42,7 +42,6 @@ e.g.
 <script>
   import SelecterIcon from "./SelecterIcon";
   import NumberBox from "./numberBox";
-  import {twoDecimal} from "../utils/filter";
 
   export default {
     name: "goods-cell",

@@ -29,7 +29,6 @@ data:icList [{label: '留言备注', placeholder: '选填（50字以内）', mod
 </template>
 
 <script>
-  import {enterLength} from "../utils/directives"
 
   export default {
     name: "input-cell",

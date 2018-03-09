@@ -11,6 +11,7 @@ export function fetch(url, params,type) {
       // headers:{'Content-Type':'application/json'},
       success:function(data){
         //服务器返回响应，根据响应结果，分析是否登录成功；
+        console.log(data);
         resolve(data);
       },
       error:function(xhr,type,errorThrown){

@@ -20,12 +20,9 @@ e.g.
 </template>
 
 <script>
-  import {enterNumber} from "../utils/directives";
+
   export default {
     name: "number-box",
-    components: {
-      enterNumber
-    },
     props: ["value"],
     methods: {
       minusNum() {

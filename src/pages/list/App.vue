@@ -1,5 +1,5 @@
 <template>
-  <top-content :scroll-style="{top:scrollTop+'px'}" :is-init-scroll="0">
+  <top-content ref="listBody" :scroll-style="{'padding-top':scrollTop+'px'}" :is-init-scroll="0">
     <header slot="page-header" class="mui-bar mui-bar-nav">
       <searcher class="sn-search" :class="{'mui-hidden':scrollTop===0}"/>
       <nav class="sn-tab-bar">
@@ -109,6 +109,7 @@
         } else {
           this.typeItems[this.lastTab].up = "";
         }
+        console.log("refs:",this.$refs)
       },
       getPullRefresher() {
         if (!this.pullRefresher) {
@@ -152,7 +153,13 @@
         this.getPullRefresher().endPullupToRefresh(true);
       },
       handleScroll(e) {
-        let y = -e.detail.y;
+        let y ;
+        if(e.detail){
+          y=-e.detail.y;
+        }else{
+          y=window.scrollY;
+        }
+        //console.log("handleScroll:",e);
         if(y > 64&&this.scrollTop !== 0){
           this.scrollTop = 0;
         }else if(y<=64&&this.scrollTop !== 82){
@@ -166,7 +173,7 @@
         pullRefresh: {
           container: '.mui-scroll-wrapper',
           down: {
-            // style: 'circle',//有此项的话，顶部部件并没有固定在页头
+            style: 'circle',//有此项的话，顶部部件并没有固定在页头
             callback: this.pulldownRefresh
           },
           up: {
@@ -176,7 +183,10 @@
         }
       });
       window.addEventListener("scroll", this.handleScroll);
-
+      //this.$refs.listBody
+    },
+    beforeDestroy(){
+      window.removeEventListener("scroll",this.handleScroll);
     }
   }
 </script>

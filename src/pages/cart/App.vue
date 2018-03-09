@@ -47,7 +47,6 @@
   import TopContent from "../../containers/topContent";
   import SelecterIcon from "../../components/SelecterIcon";
   import GoodsCell from "../../components/GoodsCell";
-  import {keep2Decimal, miliFormat} from "../../utils/filter";
   import TwoBtns from "../../components/TwoBtns";
   import InfoBtn from "../../components/InfoBtn";
 

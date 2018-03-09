@@ -29,7 +29,6 @@ e.g.
 </template>
 
 <script>
-  require("@/assets/css/common.css");
 
   export default {
     name: "top-content",

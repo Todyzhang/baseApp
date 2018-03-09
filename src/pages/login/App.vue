@@ -83,11 +83,13 @@
             //     aniShow: 'pop-in'
             //   }
             // });
-            console.log(res)
+            if(res.resultcode==0){
+              _.toast("登录成功");
+            }
           }, err => {
-            console.log(err);
+            // console.log(err);
           })
-        //.finally(() => btn.button('reset'))
+        .finally(() => btn.button('reset'))
       },
       thirdOauth(type) {
         let auth = this.oauth[type].auth;

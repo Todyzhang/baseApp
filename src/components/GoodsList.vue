@@ -17,13 +17,8 @@
 </template>
 
 <script>
-  import {keep2Decimal} from "../utils/filter";
-
   export default {
     name: "goods-list",
-    components: {
-      keep2Decimal
-    },
     props: {
       gList: {
         type: Array,
