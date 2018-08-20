@@ -42,7 +42,7 @@
         tabActive: 0,
         lastTab: 3,
         pullRefresher: null,
-        scrollTop: 82,
+        scrollTop: 126,
         gList: [
           {
             id: 1,
@@ -162,8 +162,8 @@
         //console.log("handleScroll:",e);
         if(y > 64&&this.scrollTop !== 0){
           this.scrollTop = 0;
-        }else if(y<=64&&this.scrollTop !== 82){
-          this.scrollTop = 82;
+        }else if(y<=64&&this.scrollTop !== 126){
+          this.scrollTop = 126;
         }
       }
     },
@@ -173,7 +173,7 @@
         pullRefresh: {
           container: '.mui-scroll-wrapper',
           down: {
-            style: 'circle',//有此项的话，顶部部件并没有固定在页头
+            //style: 'circle',//有此项的话，顶部部件并没有固定在页头
             callback: this.pulldownRefresh
           },
           up: {
@@ -233,3 +233,4 @@
     background-image: url("./imgs/arrow_u_d2.png");
   }
 </style>
+

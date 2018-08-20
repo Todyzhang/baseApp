@@ -46,16 +46,18 @@
   .sn-goods-list {
     padding: 2.66%;
     margin: 0;
+    text-align: left;
+    font-size:0;
   }
 
   .sn-goods-list > li {
     padding: 4%;
-    float: left;
     border: 1px solid transparent;
     width: 50%;
     background-color: #fff;
     font-size: 16px;
     border-bottom-color: #e1e1e1;
+    display:inline-block;
   }
 
   .sn-goods-list > li:nth-child(even) {

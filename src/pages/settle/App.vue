@@ -30,7 +30,7 @@
   import GoodsCell from "../../components/GoodsCell";
   import InfoBtn from "../../components/InfoBtn";
   import NavBar from "../../components/NavBar";
-  import {keep2Decimal} from "../../utils/tool";
+  import {keep2DecimalFn} from "../../utils/tool";
   import CellList from "../../components/CellList";
   import InputCell from "../../components/InputCell";
 
@@ -78,12 +78,12 @@
         return [
           {
             title: "商品总额",
-            info: "￥" + keep2Decimal(this.goodsTotal),
+            info: "￥" + keep2DecimalFn(this.goodsTotal),
             infoClass: "default-color"
           },
           {
             title: "运费",
-            info: "￥" + keep2Decimal(this.freight),
+            info: "￥" + keep2DecimalFn(this.freight),
             infoClass: "default-color"
           }
         ]

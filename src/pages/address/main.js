@@ -4,6 +4,7 @@ import Vue from "vue"
 import Base from "@/utils/base"
 import App from "./App"
 import router from "./routes"
+import store from "./store"
 
 Vue.config.productionTip = false;
 router.beforeEach((to, from, next) => {
@@ -14,6 +15,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: "#app",
   router,
+  store,
   template: "<App />",
   components: { App }
 });

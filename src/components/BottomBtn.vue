@@ -34,5 +34,6 @@
     line-height: 50px;
     font-size:17px;
     letter-spacing: 5px;
+    border-radius:initial;
   }
 </style>

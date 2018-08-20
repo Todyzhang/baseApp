@@ -9,6 +9,11 @@ export default new Router({
     {
       path: "/",
       name: "index",
+      redirect:"list"
+    },
+    {
+      path: "/list",
+      name: "list",
       component: List
     },
     {

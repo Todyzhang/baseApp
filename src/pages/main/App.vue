@@ -23,5 +23,7 @@
 </script>
 
 <style>
-
+  .mui-pull-top-pocket {
+    top: 45px;
+  }
 </style>

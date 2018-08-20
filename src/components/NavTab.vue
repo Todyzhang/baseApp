@@ -63,12 +63,13 @@
             bottom: '54px',
             top: '45px'
           });
+
+          self.append(sub);
           if (i > 0) {
             sub.hide();
           } else {
             this.items[i].is1stShow = !1;
           }
-          self.append(sub);
         }
       });
     }

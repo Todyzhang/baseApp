@@ -43,7 +43,7 @@ export function has3thClient(id) {
 /**
  * 保留2位小数
  */
-export function keep2Decimal(value) {
+export function keep2DecimalFn(value) {
   return isNaN(parseFloat(value)) ? "" : (+value).toFixed(2);
 }
 
